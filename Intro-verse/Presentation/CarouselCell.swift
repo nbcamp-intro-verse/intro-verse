@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-final class CarouselCardCell : UICollectionViewCell {
+final class CarouselCardCell: UICollectionViewCell {
     private let imageView: UIImageView = {
         let imgView = UIImageView()
         return imgView

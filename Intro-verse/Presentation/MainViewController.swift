@@ -71,6 +71,7 @@ final class MainViewController: UIViewController {
     }
 
     private func bindViewModel() {
+        
     }
 
     private func updateUIView(width card: Card?) {
