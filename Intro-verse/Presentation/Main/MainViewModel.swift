@@ -17,6 +17,6 @@ final class MainViewModel {
     }
 
     func loadCards() {
-        
+
     }
 }
