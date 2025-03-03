@@ -1,12 +1,12 @@
 import UIKit
 import SnapKit
 
-final class SeokHwanViewController: UIViewController {
-    private var viewModel = SeokHwanViewModel()
+final class JiSungViewController: UIViewController {
+    private var viewModel = JiSungViewModel()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "SeokHwan"
+        label.text = "JiSung"
         label.textAlignment = .center
         return label
     }()
