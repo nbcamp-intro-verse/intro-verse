@@ -91,12 +91,3 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
 
     }
 }
-
-#if DEBUG && os(iOS)
-import SwiftUI
-struct Preview: PreviewProvider {
-    static var previews: some View {
-        ViewController().toPreview()
-    }
-}
-#endif
