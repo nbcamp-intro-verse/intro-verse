@@ -21,7 +21,7 @@ final class MainViewController: UIViewController {
         button.addTarget(self, action: #selector(minJaeAction), for: .touchUpInside)
         return button
     }()
-    lazy var NickButton: UIButton = {
+    lazy var nickButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Nick", for: .normal)
         button.addTarget(self, action: #selector(nickAction), for: .touchUpInside)
@@ -119,7 +119,7 @@ final class MainViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(jiSungButton)
         view.addSubview(minJaeButton)
-        view.addSubview(NickButton)
+        view.addSubview(nickButton)
         view.addSubview(seokHwanButton)
         view.addSubview(seoYoungButton)
         jiSungButton.snp.makeConstraints { make in
@@ -134,14 +134,14 @@ final class MainViewController: UIViewController {
             make.width.equalTo(220)
             make.height.equalTo(50)
         }
-        NickButton.snp.makeConstraints { make in
+        nickButton.snp.makeConstraints { make in
             make.top.equalTo(minJaeButton.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
             make.width.equalTo(220)
             make.height.equalTo(50)
         }
         seokHwanButton.snp.makeConstraints { make in
-            make.top.equalTo(NickButton.snp.bottom).offset(15)
+            make.top.equalTo(nickButton.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
             make.width.equalTo(220)
             make.height.equalTo(50)
