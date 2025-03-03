@@ -73,7 +73,7 @@ final class MainViewController: UIViewController {
 
     }
 
-    private func updateUIView(width card: Card?) {
+    private func updateUIView(with card: Card?) {
 
     }
 }
