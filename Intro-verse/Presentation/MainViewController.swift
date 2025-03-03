@@ -20,7 +20,7 @@ final class MainViewController: UIViewController {
         return collectionView
     }()
 
-    private lazy var backgroundImgView: UIImageView = {
+    private lazy var backgroundImageView: UIImageView = {
         let imgView = UIImageView()
         imgView.contentMode = .scaleAspectFit
         imgView.clipsToBounds = true
@@ -50,11 +50,11 @@ final class MainViewController: UIViewController {
 
     // MARK: - Methods
     private func setupView() {
-        view.addSubview(backgroundImgView)
+        view.addSubview(backgroundImageView)
         view.addSubview(blurView)
         view.addSubview(collectionView)
 
-        backgroundImgView.snp.makeConstraints { make in
+        backgroundImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
