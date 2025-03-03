@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import SnapKit
 
 final class MainViewController: UIViewController {
     private var cards: [Card] = []
@@ -12,7 +13,6 @@ final class MainViewController: UIViewController {
         let collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(CarouselCardCell.self, forCellWithReuseIdentifier: "CarouselCardCell")
@@ -21,7 +21,6 @@ final class MainViewController: UIViewController {
 
     private lazy var backgroundImgView: UIImageView = {
         let imgView = UIImageView()
-        imgView.translatesAutoresizingMaskIntoConstraints = false
         imgView.contentMode = .scaleAspectFit
         imgView.clipsToBounds = true
         return imgView
@@ -30,7 +29,6 @@ final class MainViewController: UIViewController {
     private lazy var blurView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
         return blurView
     }()
 
@@ -52,22 +50,19 @@ final class MainViewController: UIViewController {
         view.addSubview(blurView)
         view.addSubview(collectionView)
 
-        NSLayoutConstraint.activate([
-            backgroundImgView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            backgroundImgView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            backgroundImgView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            backgroundImgView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            blurView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            blurView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            blurView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            blurView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            collectionView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45)
-        ])
+        backgroundImgView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        blurView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        collectionView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.width.equalToSuperview()
+            make.height.equalTo(view.snp.height).multipliedBy(0.45)
+        }
     }
 
     private func bindViewModel() {
