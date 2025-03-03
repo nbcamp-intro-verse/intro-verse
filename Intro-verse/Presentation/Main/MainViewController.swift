@@ -1,5 +1,4 @@
 import UIKit
-import Combine
 import SnapKit
 
 final class MainViewController: UIViewController {
