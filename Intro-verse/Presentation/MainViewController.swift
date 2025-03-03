@@ -5,7 +5,7 @@ final class MainViewController: UIViewController {
     private var cards: [Card] = []
     private var activateCard: Card?
 
-    private lazy var collectionView_: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 10
@@ -19,7 +19,7 @@ final class MainViewController: UIViewController {
         return collectionView
     }()
 
-    private lazy var backgroundImgView_: UIImageView = {
+    private lazy var backgroundImgView: UIImageView = {
         let imgView = UIImageView()
         imgView.translatesAutoresizingMaskIntoConstraints = false
         imgView.contentMode = .scaleAspectFit
@@ -27,7 +27,7 @@ final class MainViewController: UIViewController {
         return imgView
     }()
 
-    private lazy var blurView_: UIVisualEffectView = {
+    private lazy var blurView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -48,25 +48,25 @@ final class MainViewController: UIViewController {
     }
 
     private func setupView() {
-        view.addSubview(backgroundImgView_)
-        view.addSubview(blurView_)
-        view.addSubview(collectionView_)
+        view.addSubview(backgroundImgView)
+        view.addSubview(blurView)
+        view.addSubview(collectionView)
 
         NSLayoutConstraint.activate([
-            backgroundImgView_.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            backgroundImgView_.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            backgroundImgView_.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            backgroundImgView_.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            backgroundImgView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            backgroundImgView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            backgroundImgView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            backgroundImgView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            blurView_.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            blurView_.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            blurView_.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            blurView_.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            blurView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            collectionView_.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            collectionView_.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView_.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView_.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45)
+            collectionView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45)
         ])
     }
 
