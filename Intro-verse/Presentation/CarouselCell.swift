@@ -12,7 +12,7 @@ final class CarouselCardCell: UICollectionViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError()
+        super.init(coder: coder)
     }
 
     private func setupView() {
