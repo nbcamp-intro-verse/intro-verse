@@ -1,7 +1,7 @@
 import UIKit
 import Combine
 
-final class ViewController: UIViewController {
+final class MainViewController: UIViewController {
     private var cards: [Card] = []
     private var activateCard: Card?
 
@@ -78,7 +78,7 @@ final class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cards.count
     }
