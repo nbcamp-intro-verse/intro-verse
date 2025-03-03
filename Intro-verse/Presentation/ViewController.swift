@@ -1,7 +1,7 @@
 import UIKit
 import Combine
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
     private var cards: [Card] = []
     private var activateCard: Card?
 

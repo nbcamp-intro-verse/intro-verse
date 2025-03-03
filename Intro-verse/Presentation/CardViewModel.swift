@@ -1,6 +1,6 @@
 import Foundation
 
-class CardViewModel {
+final class CardViewModel {
     private(set) var cards: [Card]
     @Published var activeCard: Card?
 
