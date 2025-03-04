@@ -2,18 +2,12 @@ import UIKit
 import SnapKit
 
 final class JiSungButtonBar: UIView {
-    private let buttonBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
-        view.layer.cornerRadius = 31
-        view.clipsToBounds = true
-
+    private let backgroundView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.frame = view.bounds
-        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(blurView)
-
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.layer.cornerRadius = 31
+        view.layer.masksToBounds = true
+        view.alpha = 0.7
         return view
     }()
 
@@ -40,15 +34,11 @@ final class JiSungButtonBar: UIView {
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
 
-        addSubview(buttonBackgroundView)
+        addSubview(backgroundView)
         addSubview(stackView)
 
-        buttonBackgroundView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         let buttonData = [
@@ -64,8 +54,6 @@ final class JiSungButtonBar: UIView {
             buttons.append(button)
             stackView.addArrangedSubview(button)
         }
-
-        activateButton(at: 0)
     }
 
     private func createButton(emoji: String, text: String) -> UIButton {
@@ -100,7 +88,7 @@ final class JiSungButtonBar: UIView {
         onButtonSelected?(sender.tag)
     }
 
-    private func activateButton(at index: Int) {
+    func activateButton(at index: Int) {
         buttons.forEach {
             $0.backgroundColor = .clear
             $0.setTitleColor(.white, for: .normal)
