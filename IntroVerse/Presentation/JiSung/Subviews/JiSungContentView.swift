@@ -3,11 +3,11 @@ import SnapKit
 
 final class JiSungContentView: UIView {
     private let backgroundView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
         view.layer.cornerRadius = 31
         view.layer.masksToBounds = true
-        view.alpha = 0.7
+        view.alpha = 0.4
         return view
     }()
 
