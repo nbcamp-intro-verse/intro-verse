@@ -20,6 +20,7 @@ final class SeokHwanViewController: UIViewController {
 private extension SeokHwanViewController {
     func configure() {
         configureLayout()
+        configureDelegates()
         configureConstraints()
     }
 
@@ -31,6 +32,10 @@ private extension SeokHwanViewController {
         contentView.addSubview(headerView)
         contentView.addSubview(dividerView)
         contentView.addSubview(keywordsStackView)
+    }
+
+    func configureDelegates() {
+        headerView.delegate = self
     }
 
     func configureConstraints() {
@@ -60,6 +65,14 @@ private extension SeokHwanViewController {
             make.width.equalToSuperview().inset(20)
             make.centerX.equalToSuperview()
             make.bottom.equalTo(contentView.snp.bottom).inset(20)
+        }
+    }
+}
+
+extension SeokHwanViewController: SeokHwanLinkButtonDelegate {
+    func didTapLinkButton(_ type: LinkButtonType) {
+        if let url = URL(string: type.urlString) {
+            UIApplication.shared.open(url, options: [:])
         }
     }
 }

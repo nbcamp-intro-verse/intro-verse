@@ -1,5 +1,11 @@
 import UIKit
 
+typealias LinkButtonType = SeokHwanLinkButton.LinkButtonType
+
+protocol SeokHwanLinkButtonDelegate: AnyObject {
+    func didTapLinkButton(_ type: LinkButtonType)
+}
+
 final class SeokHwanLinkButton: UIButton {
     enum LinkButtonType: String {
         case blog = "Blog"
@@ -29,12 +35,17 @@ final class SeokHwanLinkButton: UIButton {
         }
     }
 
+    weak var delegate: SeokHwanLinkButtonDelegate?
     var linkButtonType: LinkButtonType = .none
 
     convenience init(_ linkButtonType: LinkButtonType) {
         self.init(type: .system)
         self.linkButtonType = linkButtonType
         configure()
+    }
+
+    @objc func didTapLinkButton(_ sender: SeokHwanLinkButton) {
+        delegate?.didTapLinkButton(sender.linkButtonType)
     }
 }
 
@@ -50,5 +61,6 @@ private extension SeokHwanLinkButton {
 
         backgroundColor = UIColor(red: 143 / 255, green: 202 / 255, blue: 202 / 255, alpha: 1)
         layer.cornerRadius = 10
+        addTarget(self, action: #selector(didTapLinkButton(_:)), for: .touchUpInside)
     }
 }

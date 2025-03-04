@@ -23,6 +23,13 @@ final class SeokHwanHeaderView: UIView {
     private lazy var githubLinkButton = SeokHwanLinkButton(.github)
     private lazy var blogLinkButton = SeokHwanLinkButton(.blog)
 
+    weak var delegate: SeokHwanLinkButtonDelegate? {
+        didSet {
+            githubLinkButton.delegate = delegate
+            blogLinkButton.delegate = delegate
+        }
+    }
+
     convenience init() {
         self.init(frame: .zero)
         configure()
