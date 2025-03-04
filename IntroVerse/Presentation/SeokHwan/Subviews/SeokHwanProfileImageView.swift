@@ -11,8 +11,9 @@ private extension SeokHwanProfileImageView {
     func configureLayout() {
         contentMode = .scaleAspectFit
         clipsToBounds = true
+        layer.borderWidth = 1
         layer.cornerRadius = 10
-        tintColor = .systemGreen
-        image = UIImage(systemName: "square.and.arrow.up")
+        tintColor = .systemGray
+        image = UIImage(systemName: "person.circle")
     }
 }

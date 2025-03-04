@@ -9,7 +9,7 @@ final class SeokHwanViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fill
-        stackView.spacing = 8
+        stackView.spacing = 12
         stackView.alignment = .leading
         return stackView
     }()
@@ -45,8 +45,11 @@ private extension SeokHwanViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(20)
-            make.width.equalToSuperview().inset(20)
+            make.edges.width.equalToSuperview().inset(30)
+        }
+        profileImageView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(20)
+            make.height.equalTo(profileImageView.snp.width).multipliedBy(0.5625)
         }
         dividerView.snp.makeConstraints { make in
             make.width.equalTo(stackView.snp.width)

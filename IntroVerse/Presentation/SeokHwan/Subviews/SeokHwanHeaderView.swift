@@ -6,23 +6,25 @@ final class SeokHwanHeaderView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fill
-        stackView.spacing = 8
+        stackView.spacing = 10
         stackView.alignment = .leading
         return stackView
     }()
     private lazy var koreanNameLabel: UILabel = {
         let label = UILabel()
         label.text = "유석환"
+        label.font = .boldSystemFont(ofSize: 40)
         return label
     }()
-    private lazy var englishNameLabel: UILabel = {
+    private lazy var birthdayLabel: UILabel = {
         let label = UILabel()
-        label.text = "youseokhwan"
+        label.text = "1997.01.15"
+        label.textColor = .systemGray
         return label
     }()
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+        label.text = "iOS 마스터 6기 유석환입니다! 잘부탁드립니다~"
         label.numberOfLines = 0
         return label
     }()
@@ -44,7 +46,7 @@ private extension SeokHwanHeaderView {
     func configureLayout() {
         addSubview(stackView)
         stackView.addArrangedSubview(koreanNameLabel)
-        stackView.addArrangedSubview(englishNameLabel)
+        stackView.addArrangedSubview(birthdayLabel)
         stackView.addArrangedSubview(descriptionLabel)
         stackView.addArrangedSubview(githubLinkButton)
         stackView.addArrangedSubview(blogLinkButton)
