@@ -2,6 +2,9 @@ import UIKit
 import SnapKit
 
 final class JiSungView: UIView {
+    private let scrollView = UIScrollView()
+    private let scrollContainerView = UIView()
+
     let profileView = JiSungProfileView()
     let buttonBar = JiSungButtonBar()
     let contentView = JiSungContentView()
@@ -19,27 +22,42 @@ final class JiSungView: UIView {
     private func setupView() {
         let backgroundView = JiSungBackgroundView()
         addSubview(backgroundView)
-        addSubview(profileView)
-        addSubview(buttonBar)
-        addSubview(contentView)
+        addSubview(scrollView)
+        scrollView.addSubview(scrollContainerView)
+
+        scrollContainerView.addSubview(profileView)
+        scrollContainerView.addSubview(buttonBar)
+        scrollContainerView.addSubview(contentView)
 
         backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
+        scrollView.alwaysBounceVertical = true
+
+        scrollView.snp.makeConstraints { $0.edges.equalToSuperview() }
+
+        scrollContainerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+
         profileView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().multipliedBy(0.85)
+            make.top.equalTo(scrollContainerView.snp.top).offset(UIScreen.main.bounds.height * 0.3)
         }
 
         buttonBar.snp.makeConstraints { make in
-            make.top.equalTo(profileView.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(profileView.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(62)
         }
 
         contentView.snp.makeConstraints { make in
-            make.top.equalTo(buttonBar.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.greaterThanOrEqualTo(120)
+            make.top.equalTo(buttonBar.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(50)
+            make.height.greaterThanOrEqualTo(200)
         }
     }
+
+    
 }
