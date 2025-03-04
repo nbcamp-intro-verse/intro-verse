@@ -4,10 +4,7 @@ import SnapKit
 final class SeokHwanViewController: UIViewController {
     private let viewModel = SeokHwanViewModel()
 
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        return scrollView
-    }()
+    private lazy var scrollView = UIScrollView()
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -35,7 +32,6 @@ private extension SeokHwanViewController {
 
     func configureLayout() {
         view.backgroundColor = .systemBackground
-
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(profileImageView)
