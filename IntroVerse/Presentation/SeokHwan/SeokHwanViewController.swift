@@ -2,12 +2,24 @@ import UIKit
 import SnapKit
 
 final class SeokHwanViewController: UIViewController {
-    private var viewModel = SeokHwanViewModel()
+    private let viewModel = SeokHwanViewModel()
 
-    private let profileImageView = SeokHwanProfileImageView()
-    private let headerView = SeokHwanHeaderView()
-    private let dividerView = SeokHwanDividerView()
-    private let keywordsView = SeokHwanKeywordsView()
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        return scrollView
+    }()
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.spacing = 8
+        stackView.alignment = .leading
+        return stackView
+    }()
+    private lazy var profileImageView = SeokHwanProfileImageView()
+    private lazy var headerView = SeokHwanHeaderView()
+    private lazy var dividerView = SeokHwanDividerView()
+    private lazy var keywordsView = SeokHwanKeywordsView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,29 +36,21 @@ private extension SeokHwanViewController {
     func configureLayout() {
         view.backgroundColor = .systemBackground
 
-        view.addSubview(profileImageView)
-        view.addSubview(headerView)
-        view.addSubview(dividerView)
-        view.addSubview(keywordsView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(stackView)
+        stackView.addArrangedSubview(profileImageView)
+        stackView.addArrangedSubview(headerView)
+        stackView.addArrangedSubview(dividerView)
+        stackView.addArrangedSubview(keywordsView)
     }
 
     func configureConstraints() {
-        profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
-            make.horizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(profileImageView.snp.width).multipliedBy(0.5625)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        headerView.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.bottom).offset(20)
-            make.horizontalEdges.equalToSuperview()
-        }
-        dividerView.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
-        }
-        keywordsView.snp.makeConstraints { make in
-            make.top.equalTo(dividerView.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
+        stackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(20)
+            make.width.equalToSuperview().inset(20)
         }
     }
 }
