@@ -4,12 +4,16 @@ import SnapKit
 final class SeokHwanViewController: UIViewController {
     private let viewModel = SeokHwanViewModel()
 
-    private lazy var scrollView = UIScrollView()
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.isScrollEnabled = true
+        return scrollView
+    }()
     private lazy var contentView = UIView()
     private lazy var profileImageView = SeokHwanProfileImageView()
     private lazy var headerView = SeokHwanHeaderView()
     private lazy var dividerView = SeokHwanDividerView()
-    private lazy var keywordsView = SeokHwanKeywordsView()
+    private lazy var keywordsStackView = SeokHwanKeywordsStackView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +37,7 @@ private extension SeokHwanViewController {
         contentView.addSubview(profileImageView)
         contentView.addSubview(headerView)
         contentView.addSubview(dividerView)
-        contentView.addSubview(keywordsView)
+        contentView.addSubview(keywordsStackView)
     }
 
     func configureConstraints() {
@@ -41,7 +45,7 @@ private extension SeokHwanViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         contentView.snp.makeConstraints { make in
-            make.horizontalEdges.width.equalToSuperview()
+            make.edges.width.equalToSuperview()
         }
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(30)
@@ -51,17 +55,18 @@ private extension SeokHwanViewController {
         headerView.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(30)
             make.horizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(220)
+            make.height.equalTo(200)
         }
         dividerView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(20)
             make.width.equalToSuperview().inset(20)
             make.centerX.equalToSuperview()
         }
-        keywordsView.snp.makeConstraints { make in
+        keywordsStackView.snp.makeConstraints { make in
             make.top.equalTo(dividerView.snp.bottom).offset(20)
             make.width.equalToSuperview().inset(20)
             make.centerX.equalToSuperview()
+            make.bottom.equalTo(contentView.snp.bottom).inset(20)
         }
     }
 }
