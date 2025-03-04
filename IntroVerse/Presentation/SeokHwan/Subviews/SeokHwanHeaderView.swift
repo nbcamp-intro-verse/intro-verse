@@ -2,14 +2,6 @@ import UIKit
 import SnapKit
 
 final class SeokHwanHeaderView: UIView {
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        stackView.alignment = .leading
-        return stackView
-    }()
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "유석환"
@@ -44,17 +36,33 @@ private extension SeokHwanHeaderView {
     }
 
     func configureLayout() {
-        addSubview(stackView)
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(birthdayLabel)
-        stackView.addArrangedSubview(descriptionLabel)
-        stackView.addArrangedSubview(githubLinkButton)
-        stackView.addArrangedSubview(blogLinkButton)
+        addSubview(nameLabel)
+        addSubview(birthdayLabel)
+        addSubview(descriptionLabel)
+        addSubview(blogLinkButton)
+        addSubview(githubLinkButton)
     }
 
     func configureConstraints() {
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        nameLabel.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview()
+        }
+        birthdayLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom)
+            make.leading.equalToSuperview()
+        }
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(birthdayLabel.snp.bottom).offset(15)
+            make.width.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        blogLinkButton.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
+            make.leading.equalToSuperview()
+        }
+        githubLinkButton.snp.makeConstraints { make in
+            make.top.equalTo(blogLinkButton.snp.bottom).offset(10)
+            make.leading.equalToSuperview()
         }
     }
 }
