@@ -52,5 +52,8 @@ private extension SeokHwanViewController {
             make.edges.equalToSuperview().inset(20)
             make.width.equalToSuperview().inset(20)
         }
+        dividerView.snp.makeConstraints { make in
+            make.width.equalTo(stackView.snp.width)
+        }
     }
 }
