@@ -45,7 +45,6 @@ final class Renderer: NSObject {
         } catch {
             return nil
         }
-        
     }
         
     func draw(in view: MTKView, in renderCommandEncoder: MTLRenderCommandEncoder, time: Float) {
