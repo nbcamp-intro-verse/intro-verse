@@ -3,70 +3,8 @@ import SnapKit
 import MetalKit
 
 final class NickViewController: UIViewController, MTKViewDelegate {
-    // MARK: - Property
-    private lazy var nameLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .clear
-        label.textColor = .white
-        label.font = .fira(size: 20, weight: .semibold)
-        label.text = "Seungho Jang"
-        return label
-    }()
-    
-    private lazy var roleLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .clear
-        label.textColor = .white
-        label.font = .fira(size: 14, weight: .medium)
-        label.text = "\u{2022} Graphics Engineer"
-        return label
-    }()
-    
-    private lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
-        let image = UIImage(named: "nick_profile")
-        imageView.image = image
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-    
-    private lazy var githublogoImageView: UIImageView = {
-        let imageView = UIImageView()
-        let image = UIImage(named: "github_logo")
-        imageView.image = image
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-    
-    private lazy var githubLabel: UILabel = {
-        let label = UILabel()
-        label.text = "https://github.com/sjang1594"
-        label.textColor = .white
-        label.font = .fira(size: 18, weight: .semibold)
-        label.textAlignment = .center
-        label.isUserInteractionEnabled = true
-        return label
-    }()
-    
-    private lazy var blogLogoImageView: UIImageView = {
-        let imageView = UIImageView()
-        let image = UIImage(named: "nick_blog_logo")
-        imageView.image = image
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private lazy var blogLabel: UILabel = {
-        let label = UILabel()
-        label.text = "https://sjang1594.github.io/"
-        label.textColor = .white
-        label.font = .fira(size: 18, weight: .semibold)
-        label.textAlignment = .center
-        label.isUserInteractionEnabled = true
-        return label
-    }()
-    
+    // MARK: - View Property
+    private lazy var profileView = ProfileView()
     // MARK: - Rendering Property
     var mtkView: MTKView!
     var device: MTLDevice!
@@ -91,15 +29,7 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         super.viewDidLoad()
         setupGradientLayer()
         setupMTKView()
-        setupWhoAmILayout()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        imageView.layer.cornerRadius = imageView.frame.size.width / 2
-        imageView.layer.borderWidth = 2
-        githublogoImageView.layer.cornerRadius = githublogoImageView.frame.size.width / 2
-        blogLogoImageView.layer.cornerRadius = blogLogoImageView.frame.size.width / 2
+        setViewConstraints()
     }
     
     private func setupGradientLayer() {
@@ -114,6 +44,21 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
+    private func setViewConstraints() {
+        view.addSubview(mtkView)
+        view.addSubview(profileView)
+        mtkView.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(view.snp.height).multipliedBy(0.25)
+        }
+        
+        profileView.snp.makeConstraints { make in
+            make.top.equalTo(mtkView.snp.bottom)
+            make.leading.equalToSuperview().offset(10)
+        }
+    }
+    
     private func setupMTKView() {
         // Mark: - Rendererr
         guard let device = MTLCreateSystemDefaultDevice(),
@@ -126,71 +71,14 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         mtkView.colorPixelFormat = .bgra8Unorm_srgb
         mtkView.depthStencilPixelFormat = .depth32Float
         mtkView.delegate = self
-        view.addSubview(mtkView)
         
         do {
             renderer = try Renderer(view: mtkView, vertexDescriptor: vertexDescriptor)
         } catch {
             handleRenderError(error)
         }
-        
-        // Constraint
-        mtkView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(view.snp.height).multipliedBy(0.25)
-        }
     }
-    
-    private func setupWhoAmILayout() {
-        view.addSubview(nameLabel)
-        view.addSubview(roleLabel)
-        view.addSubview(imageView)
-        view.addSubview(githublogoImageView)
-        view.addSubview(githubLabel)
-        view.addSubview(blogLogoImageView)
-        view.addSubview(blogLabel)
-
-        nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(mtkView.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(10)
-        }
         
-        roleLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(5)
-            make.leading.equalToSuperview().offset(15)
-        }
-        
-        imageView.snp.makeConstraints { make in
-            make.top.equalTo(mtkView.snp.bottom).offset(11)
-            // -407: iphone 16 pro width + trailing position + imageView.width
-            make.trailing.equalToSuperview().offset(-407 + 372)
-            make.width.height.equalTo(72)
-        }
-        
-        githublogoImageView.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(3)
-            make.leading.equalToSuperview().offset(view.frame.width * 0.125)
-            make.width.height.equalTo(32)
-        }
-        
-        githubLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(7)
-            make.leading.equalTo(githublogoImageView.snp.trailing).offset(10)
-        }
-        
-        blogLogoImageView.snp.makeConstraints { make in
-            make.top.equalTo(githublogoImageView.snp.bottom).offset(3)
-            make.leading.equalToSuperview().offset(view.frame.width * 0.125)
-            make.width.height.equalTo(32)
-        }
-        
-        blogLabel.snp.makeConstraints { make in
-            make.top.equalTo(githubLabel.snp.bottom).offset(14)
-            make.leading.equalTo(blogLogoImageView.snp.trailing).offset(10)
-        }
-    }
-    
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         // no size changed
     }
