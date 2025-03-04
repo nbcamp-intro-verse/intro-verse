@@ -1,40 +1,48 @@
 import UIKit
 
 final class SeokHwanLinkButton: UIButton {
-    enum ButtonType: String {
-        case github = "GitHub"
+    enum LinkButtonType: String {
         case blog = "Blog"
+        case github = "GitHub"
+        case none
 
         var imageName: String {
             switch self {
-            case .github:
-                return "figure.tennis"
             case .blog:
                 return "figure.tennis"
+            case .github:
+                return "figure.tennis"
+            default:
+                return ""
             }
         }
 
         var urlString: String {
             switch self {
-            case .github:
-                return "https://github.com/youseokhwan"
             case .blog:
                 return "https://youseokhwan.me"
+            case .github:
+                return "https://github.com/youseokhwan"
+            default:
+                return ""
             }
         }
     }
 
-    convenience init(_ type: SeokHwanLinkButton.ButtonType) {
+    var linkButtonType: LinkButtonType = .none
+
+    convenience init(_ linkButtonType: LinkButtonType) {
         self.init(type: .system)
-        configure(by: type)
+        self.linkButtonType = linkButtonType
+        configure()
     }
 }
 
 private extension SeokHwanLinkButton {
-    func configure(by type: SeokHwanLinkButton.ButtonType) {
+    func configure() {
         var configuration = UIButton.Configuration.plain()
-        configuration.title = type.rawValue
-        configuration.image = UIImage(systemName: type.imageName)
+        configuration.title = linkButtonType.rawValue
+        configuration.image = UIImage(systemName: linkButtonType.imageName)
         configuration.imagePlacement = .leading
         configuration.imagePadding = 10
         configuration.baseForegroundColor = .black
