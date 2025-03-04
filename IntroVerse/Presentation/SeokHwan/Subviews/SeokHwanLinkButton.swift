@@ -36,7 +36,11 @@ private extension SeokHwanLinkButton {
         configuration.title = type.rawValue
         configuration.image = UIImage(systemName: type.imageName)
         configuration.imagePlacement = .leading
+        configuration.imagePadding = 10
         configuration.baseForegroundColor = .black
         self.configuration = configuration
+
+        backgroundColor = UIColor(red: 143 / 255, green: 202 / 255, blue: 202 / 255, alpha: 1)
+        layer.cornerRadius = 10
     }
 }
