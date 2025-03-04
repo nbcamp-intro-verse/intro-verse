@@ -31,7 +31,10 @@ private extension SeokHwanViewController {
     }
 
     func configureLayout() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(red: 204 / 255,
+                                       green: 226 / 255,
+                                       blue: 203 / 255,
+                                       alpha: 1)
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(profileImageView)

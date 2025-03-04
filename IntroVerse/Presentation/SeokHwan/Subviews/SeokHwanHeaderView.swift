@@ -10,7 +10,7 @@ final class SeokHwanHeaderView: UIView {
         stackView.alignment = .leading
         return stackView
     }()
-    private lazy var koreanNameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "유석환"
         label.font = .boldSystemFont(ofSize: 40)
@@ -45,7 +45,7 @@ private extension SeokHwanHeaderView {
 
     func configureLayout() {
         addSubview(stackView)
-        stackView.addArrangedSubview(koreanNameLabel)
+        stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(birthdayLabel)
         stackView.addArrangedSubview(descriptionLabel)
         stackView.addArrangedSubview(githubLinkButton)

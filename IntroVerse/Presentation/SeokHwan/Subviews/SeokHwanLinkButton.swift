@@ -10,7 +10,7 @@ final class SeokHwanLinkButton: UIButton {
             case .github:
                 return "figure.tennis"
             case .blog:
-                return "figure.golf"
+                return "figure.tennis"
             }
         }
 
@@ -36,6 +36,7 @@ private extension SeokHwanLinkButton {
         configuration.title = type.rawValue
         configuration.image = UIImage(systemName: type.imageName)
         configuration.imagePlacement = .leading
+        configuration.baseForegroundColor = .black
         self.configuration = configuration
     }
 }
