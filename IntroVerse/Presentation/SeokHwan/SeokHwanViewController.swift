@@ -11,13 +11,26 @@ final class SeokHwanViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configure()
+    }
+}
+
+private extension SeokHwanViewController {
+    func configure() {
+        configureLayout()
+        configureConstraints()
+    }
+
+    func configureLayout() {
         view.backgroundColor = .systemBackground
 
         view.addSubview(profileImageView)
         view.addSubview(headerView)
         view.addSubview(dividerView)
         view.addSubview(keywordsView)
+    }
 
+    func configureConstraints() {
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.centerX.equalToSuperview()
