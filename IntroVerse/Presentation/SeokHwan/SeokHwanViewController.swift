@@ -4,11 +4,7 @@ import SnapKit
 final class SeokHwanViewController: UIViewController {
     private let viewModel = SeokHwanViewModel()
 
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.isScrollEnabled = true
-        return scrollView
-    }()
+    private lazy var scrollView = UIScrollView()
     private lazy var contentView = UIView()
     private lazy var profileImageView = SeokHwanProfileImageView()
     private lazy var headerView = SeokHwanHeaderView()
@@ -28,10 +24,7 @@ private extension SeokHwanViewController {
     }
 
     func configureLayout() {
-        view.backgroundColor = UIColor(red: 204 / 255,
-                                       green: 226 / 255,
-                                       blue: 203 / 255,
-                                       alpha: 1)
+        view.backgroundColor = UIColor(red: 204 / 255, green: 226 / 255, blue: 203 / 255, alpha: 1)
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(profileImageView)
