@@ -1,16 +1,29 @@
 import UIKit
 import SnapKit
+import Combine
 import SafariServices
 
 final class MinJaeViewController: UIViewController {
     private let mainCollectionView = MinjaeMainCollectionView()
     private var viewModel = MinJaeViewModel()
+    private let imageRepository: ImageRepository
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(imageRepository: ImageRepository) {
+        self.imageRepository = imageRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
     
     private lazy var backgroundImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         return iv
     }()
+    
     private func addViews() {
         view.addSubview(mainCollectionView)
     }
@@ -53,15 +66,17 @@ final class MinJaeViewController: UIViewController {
     }
     
     private func loadImage(url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.backgroundImageView.image = image
-                    }
+        imageRepository.loadImageNetwork(from: url, cahceOption: .memory)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    print("Failed to load image: \(error)")
                 }
+            } receiveValue: { [weak self] image in
+                self?.backgroundImageView.image = image
+                self?.mainCollectionView.reloadData()
             }
-        }
+            .store(in: &cancellables)
     }
 }
 
