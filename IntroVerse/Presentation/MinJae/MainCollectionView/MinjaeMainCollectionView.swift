@@ -6,7 +6,7 @@ protocol MinjaeMainCollectionViewDelegate: AnyObject {
 
 final class MinjaeMainCollectionView: UICollectionView {
     
-    private let dividedContents: [ContentType] = [ .information, .motto, .introduce, .talk, .memo]
+    private let stackViewContents: [ContentType] = [ .information, .motto, .introduce, .talk, .memo]
     weak var collectionViewDelegate: MinjaeMainCollectionViewDelegate?
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -31,7 +31,7 @@ final class MinjaeMainCollectionView: UICollectionView {
 extension MinjaeMainCollectionView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dividedContents.count
+        return stackViewContents.count
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -43,7 +43,7 @@ extension MinjaeMainCollectionView: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MinjaeMainCollectionViewCell.identifier, for: indexPath) as? MinjaeMainCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.configure(model: dividedContents[indexPath.row])
+        cell.configure(model: stackViewContents[indexPath.row])
         return cell
     }
     
@@ -55,7 +55,7 @@ extension MinjaeMainCollectionView: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cell = MinjaeMainCollectionViewCell(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width - 40, height: 400))
-        cell.configure(model: dividedContents[indexPath.row])
+        cell.configure(model: stackViewContents[indexPath.row])
         cell.layoutIfNeeded()
         let estiamtedSize = cell.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width - 40, height: 400))
         return CGSize(width: collectionView.frame.width - 40, height: estiamtedSize.height)
