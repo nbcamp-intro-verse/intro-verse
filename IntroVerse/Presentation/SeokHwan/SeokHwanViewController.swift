@@ -8,7 +8,7 @@ final class SeokHwanViewController: UIViewController {
     private lazy var contentView = UIView()
     private lazy var profileImageView = SeokHwanProfileImageView()
     private lazy var headerView = SeokHwanHeaderView()
-    private lazy var dividerView = SeokHwanDividerView()
+    private lazy var divider = SeokHwanDivider()
     private lazy var tmiStackView = SeokHwanTMIStackView()
 
     override func viewDidLoad() {
@@ -30,7 +30,7 @@ private extension SeokHwanViewController {
         scrollView.addSubview(contentView)
         contentView.addSubview(profileImageView)
         contentView.addSubview(headerView)
-        contentView.addSubview(dividerView)
+        contentView.addSubview(divider)
         contentView.addSubview(tmiStackView)
     }
 
@@ -55,13 +55,13 @@ private extension SeokHwanViewController {
             make.horizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(230)
         }
-        dividerView.snp.makeConstraints { make in
+        divider.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(20)
             make.width.equalToSuperview().inset(20)
             make.centerX.equalToSuperview()
         }
         tmiStackView.snp.makeConstraints { make in
-            make.top.equalTo(dividerView.snp.bottom).offset(20)
+            make.top.equalTo(divider.snp.bottom).offset(20)
             make.width.equalToSuperview().inset(20)
             make.centerX.equalToSuperview()
             make.bottom.equalTo(contentView.snp.bottom).inset(20)

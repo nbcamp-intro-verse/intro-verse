@@ -1,14 +1,14 @@
 import UIKit
 import SnapKit
 
-final class SeokHwanDividerView: UIView {
+final class SeokHwanDivider: UIView {
     convenience init() {
         self.init(frame: .zero)
         configure()
     }
 }
 
-private extension SeokHwanDividerView {
+private extension SeokHwanDivider {
     func configure() {
         backgroundColor = .lightGray
         snp.makeConstraints { make in
