@@ -2,6 +2,9 @@ import UIKit
 
 final class MinjaeContentStackView: UIStackView {
     
+    var memos: [String] = []
+    private lazy var views: [UIView] = [titleLabel, nameLabel, birthLabel, mbtiStackView, descriptionLabel, memoTitleStackView, memoStackView]
+    
     private let titleLabel: UILabel = {
         let lb = UILabel()
         lb.text = "타이틀"
@@ -62,15 +65,10 @@ final class MinjaeContentStackView: UIStackView {
         titleLabel.font = .boldSystemFont(ofSize: 20)
         let addBtn = UIButton()
         addBtn.setImage(UIImage(systemName: "square.and.pencil", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold, scale: .large)), for: .normal)
+        addBtn.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(addBtn)
         return stackView
-    }()
-    
-    private let memoAddButton: UIButton = {
-        let btn = UIButton()
-        btn.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-        return btn
     }()
     
     private let memoStackView: UIStackView = {
@@ -81,7 +79,9 @@ final class MinjaeContentStackView: UIStackView {
         return sv
     }()
     
-    private lazy var views: [UIView] = [titleLabel, nameLabel, birthLabel, mbtiStackView, descriptionLabel, memoTitleStackView, memoStackView]
+    @objc func addButtonTapped() {
+        memos.
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -133,6 +133,11 @@ final class MinjaeContentStackView: UIStackView {
             descriptionLabel.textAlignment = .center
             descriptionLabel.textColor = .black
         case .memo:
+            memos.forEach { memo in
+                let label = UILabel()
+                label.text = memo
+                memoStackView.addArrangedSubview(label)
+            }
         default:
             titleLabel.font = .systemFont(ofSize: 15)
             descriptionLabel.font = .boldSystemFont(ofSize: 17)
