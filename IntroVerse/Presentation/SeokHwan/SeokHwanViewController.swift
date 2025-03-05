@@ -48,7 +48,7 @@ private extension SeokHwanViewController {
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(30)
             make.horizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(profileImageView.snp.width).multipliedBy(0.5625)
+            make.height.equalTo(profileImageView.snp.width)
         }
         headerView.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(30)

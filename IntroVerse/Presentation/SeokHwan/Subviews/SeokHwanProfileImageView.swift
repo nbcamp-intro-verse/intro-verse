@@ -9,11 +9,10 @@ final class SeokHwanProfileImageView: UIImageView {
 
 private extension SeokHwanProfileImageView {
     func configureLayout() {
-        contentMode = .scaleAspectFit
+        contentMode = .scaleAspectFill
         clipsToBounds = true
-        layer.borderWidth = 1
         layer.cornerRadius = 10
         tintColor = .systemGray
-        image = UIImage(systemName: "person.circle")
+        image = UIImage(named: "SeokHwanProfile")
     }
 }
