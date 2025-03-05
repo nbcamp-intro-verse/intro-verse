@@ -2,27 +2,27 @@ import UIKit
 import SnapKit
 
 final class JiSungViewController: UIViewController {
-    private let jiSungView = JiSungView()
+    private let jiSungContainerView = JiSungContainerView()
 
     override func loadView() {
-        view = jiSungView
+        view = jiSungContainerView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        jiSungView.delegate = self
+        jiSungContainerView.delegate = self
 
         setupInitialSelection()
 
-        jiSungView.buttonBar.onButtonSelected = { [weak self] index in
+        jiSungContainerView.buttonBar.onButtonSelected = { [weak self] index in
             self?.updateContent(for: index)
         }
     }
 
     private func setupInitialSelection() {
         let initialIndex = 0
-        jiSungView.buttonBar.activateButton(at: initialIndex)
+        jiSungContainerView.buttonBar.activateButton(at: initialIndex)
         updateContent(for: initialIndex)
     }
 
@@ -34,12 +34,12 @@ final class JiSungViewController: UIViewController {
         ]
 
         if index < contentTexts.count {
-            jiSungView.contentView.upDateContent(text: contentTexts[index])
+            jiSungContainerView.contentView.upDateContent(text: contentTexts[index])
         }
     }
 }
 
-extension JiSungViewController: JiSungViewDelegate {
+extension JiSungViewController: JiSungContainerViewDelegate {
     func didTapGitHub() {
         openURL("https://github.com/meowbutlerdev")
     }

@@ -1,13 +1,13 @@
 import UIKit
 import SnapKit
 
-protocol JiSungViewDelegate: AnyObject {
+protocol JiSungContainerViewDelegate: AnyObject {
     func didTapGitHub()
     func didTapBlog()
 }
 
-final class JiSungView: UIView {
-    weak var delegate: JiSungViewDelegate?
+final class JiSungContainerView: UIView {
+    weak var delegate: JiSungContainerViewDelegate?
 
     private let scrollView = UIScrollView()
     private let scrollContainerView = UIView()
@@ -69,7 +69,7 @@ final class JiSungView: UIView {
     }
 }
 
-extension JiSungView: JiSungProfileViewDelegate {
+extension JiSungContainerView: JiSungProfileViewDelegate {
     func didTapGitHub() {
         delegate?.didTapGitHub()
     }
