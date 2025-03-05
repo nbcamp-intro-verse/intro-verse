@@ -2,7 +2,6 @@ import UIKit
 
 final class MinjaeContentStackView: UIStackView {
     
-    var memos: [String] = []
     private lazy var views: [UIView] = [titleLabel, nameLabel, birthLabel, mbtiStackView, descriptionLabel, memoTitleStackView, memoStackView]
     
     private let titleLabel: UILabel = {
@@ -76,16 +75,32 @@ final class MinjaeContentStackView: UIStackView {
         sv.axis = .vertical
         sv.alignment = .leading
         sv.distribution = .fill
+        sv.spacing = 5
         return sv
     }()
     
+    private func setMemoLabel(text: String) -> UIView {
+        let view = UIView()
+        let label = UILabel()
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(5)
+            make.leading.trailing.equalToSuperview().inset(10)
+        }
+        label.text = text
+        label.numberOfLines = 0
+        view.layer.cornerRadius = 15
+        view.backgroundColor = .white
+        return view
+    }
+    
     @objc func addButtonTapped() {
-        memos.
+        NotificationCenter.default.post(name: Notification.Name("addAlert"), object: nil)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        spacing = 1
+        spacing = 3
         alignment = .leading
         distribution = .fill
         axis = .vertical
