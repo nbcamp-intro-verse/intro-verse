@@ -5,10 +5,10 @@ final class MainViewController: UIViewController {
     // MARK: - Properties
     private var cards: [Card] = []
     private var activateCard: Card?
-
-    /**
-     Dummy UI Components
-     */
+    let cache: ImageCache
+    let imageRepository: ImageRepository
+    
+    /** Dummy UI Components */
     lazy var jiSungButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("JiSung", for: .normal)
@@ -49,7 +49,7 @@ final class MainViewController: UIViewController {
         present(viewController, animated: true)
     }
     @objc func minJaeAction() {
-        let viewController = MinJaeViewController()
+        let viewController = MinJaeViewController(imageRepository: imageRepository)
         viewController.modalPresentationStyle = .automatic
         present(viewController, animated: true)
     }
@@ -97,10 +97,14 @@ final class MainViewController: UIViewController {
 
     // MARK: - Initializers
     init() {
+        self.cache = ImageCache()
+        self.imageRepository = ImageRepository(cache: cache)
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
+        self.cache = ImageCache()
+        self.imageRepository = ImageRepository(cache: cache)
         super.init(coder: coder)
     }
 
