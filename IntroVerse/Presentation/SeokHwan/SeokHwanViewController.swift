@@ -10,6 +10,7 @@ final class SeokHwanViewController: UIViewController {
     private lazy var headerView = SeokHwanHeaderView()
     private lazy var divider = SeokHwanDivider()
     private lazy var tmiStackView = SeokHwanTMIStackView()
+    private lazy var stickyHeaderView = SeokHwanStickyHeaderView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +28,7 @@ private extension SeokHwanViewController {
     func configureLayout() {
         view.backgroundColor = UIColor(named: "SeokHwanBackground")
         view.addSubview(scrollView)
+        view.addSubview(stickyHeaderView)
         scrollView.addSubview(contentView)
         contentView.addSubview(profileImageView)
         contentView.addSubview(headerView)
@@ -39,6 +41,9 @@ private extension SeokHwanViewController {
     }
 
     func configureConstraints() {
+        stickyHeaderView.snp.makeConstraints { make in
+            make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
