@@ -12,6 +12,7 @@ final class JiSungContainerView: UIView {
     private let profileView = JiSungProfileView()
     private let buttonBarView = JiSungButtonBarView()
     private let contentView = JiSungContentView()
+    private let memoView = JiSungMemoView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,6 +36,7 @@ final class JiSungContainerView: UIView {
         scrollContainerView.addSubview(profileView)
         scrollContainerView.addSubview(buttonBarView)
         scrollContainerView.addSubview(contentView)
+        scrollContainerView.addSubview(memoView)
 
         scrollView.alwaysBounceVertical = true
 
@@ -56,12 +58,17 @@ final class JiSungContainerView: UIView {
         contentView.snp.makeConstraints { make in
             make.top.equalTo(buttonBarView.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(50)
             make.height.greaterThanOrEqualTo(200)
+        }
+        memoView.snp.makeConstraints { make in
+            make.top.equalTo(contentView.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(50)
+            make.height.greaterThanOrEqualTo(100)
         }
         blurBoxView.snp.makeConstraints { make in
             make.top.equalTo(profileView.snp.top).offset(-20)
-            make.bottom.equalTo(contentView.snp.bottom).offset(20)
+            make.bottom.equalTo(memoView.snp.bottom).offset(20)
             make.width.equalToSuperview()
         }
     }
