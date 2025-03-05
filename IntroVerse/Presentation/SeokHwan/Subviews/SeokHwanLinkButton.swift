@@ -60,7 +60,7 @@ private extension SeokHwanLinkButton {
         configuration.baseForegroundColor = .black
         self.configuration = configuration
 
-        backgroundColor = UIColor(red: 143 / 255, green: 202 / 255, blue: 202 / 255, alpha: 1)
+        backgroundColor = UIColor(named: "SeokHwanLinkButtonBackground")
         layer.cornerRadius = 10
         addTarget(self, action: #selector(didTapLinkButton(_:)), for: .touchUpInside)
     }
