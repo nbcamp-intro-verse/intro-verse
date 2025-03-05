@@ -9,7 +9,6 @@ final class SeoYoungViewController: UIViewController {
         label.text = "한서영"
         label.textAlignment = .center
         label.font = .preferredFont(forTextStyle: .largeTitle)
-
         return label
     }()
 
@@ -21,35 +20,30 @@ final class SeoYoungViewController: UIViewController {
         label.textColor = UIColor(red: 0.604, green: 0.651, blue: 0.698, alpha: 1)
         label.isMultipleTouchEnabled = true
         label.numberOfLines = 2
-
         return label
     }()
 
     private let profileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "sy_profile"))
         imageView.contentMode = .scaleAspectFit
-
         return imageView
     }()
 
     private let githubImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "GithubIIcon_blue"))
         imageView.contentMode = .scaleToFill
-
         return imageView
     }()
 
     private let linkedInImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "LinkedInIcon_blue"))
         imageView.contentMode = .scaleToFill
-
         return imageView
     }()
 
     private let tImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "TIcon_blue"))
         imageView.contentMode = .scaleToFill
-
         return imageView
     }()
 
@@ -60,16 +54,14 @@ final class SeoYoungViewController: UIViewController {
         stackView.distribution = .equalSpacing
         stackView.spacing = 5
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
         return stackView
     }()
 
-    private var dividerView: UIView = {
-        let label = UILabel()
-        label.backgroundColor = UIColor(red: 0.737, green: 0.8, blue: 0.863, alpha: 1)
-
-        return label
-    } ()
+    private var dividerView: UIView {
+        let divider = UIView()
+        divider.backgroundColor = UIColor(red: 0.737, green: 0.8, blue: 0.863, alpha: 1)
+        return divider
+    }
 
     private let myAdvantagesCardView = CardView(
         title: "나의 장점",
@@ -89,15 +81,41 @@ final class SeoYoungViewController: UIViewController {
            """
     )
 
+    private let myAppsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "나의 앱들"
+        label.font = .preferredFont(forTextStyle: .headline)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
+    }()
+
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layoutMargins = UIEdgeInsets(top: 41, left: 41, bottom: 0, right: 0)
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let divider1 = dividerView
+        let divider2 = dividerView
+
         view.backgroundColor = .systemBackground
         view.addSubview(titleLabel)
         view.addSubview(profileImageView)
         view.addSubview(informationLabel)
         view.addSubview(iconStackView)
-        view.addSubview(dividerView)
-        view.addSubview(myAdvantagesCardView)
+        view.addSubview(divider1)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
 
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(85)
@@ -126,16 +144,47 @@ final class SeoYoungViewController: UIViewController {
             }
         }
 
-        dividerView.snp.makeConstraints { make in
+        divider1.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.left.right.equalToSuperview().inset(41)
             make.top.equalTo(profileImageView.snp.bottom).offset(32)
         }
 
-        myAdvantagesCardView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(41)
-            make.top.equalTo(dividerView.snp.bottom).offset(32)
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(divider1.snp.bottom).offset(32)
+            make.left.right.bottom.equalToSuperview()
         }
 
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalTo(scrollView)
+        }
+
+        contentView.addSubview(myAdvantagesCardView)
+        contentView.addSubview(myCooperationCardView)
+        contentView.addSubview(divider2)
+        contentView.addSubview(myAppsLabel)
+
+        myAdvantagesCardView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(0)
+            make.left.right.equalToSuperview().inset(41)
+        }
+
+        myCooperationCardView.snp.makeConstraints { make in
+            make.top.equalTo(myAdvantagesCardView.snp.bottom).offset(10)
+            make.left.right.equalToSuperview().inset(41)
+        }
+
+        divider2.snp.makeConstraints { make in
+            make.top.equalTo(myCooperationCardView.snp.bottom).offset(32)
+            make.left.right.equalToSuperview().inset(41)
+            make.height.equalTo(1)
+        }
+
+        myAppsLabel.snp.makeConstraints { make in
+            make.top.equalTo(divider2.snp.bottom).offset(32)
+            make.left.right.equalToSuperview().inset(41)
+            make.bottom.equalToSuperview().offset(-32)
+        }
     }
 }
