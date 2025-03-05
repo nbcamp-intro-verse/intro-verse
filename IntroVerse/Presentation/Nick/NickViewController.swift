@@ -5,6 +5,32 @@ import MetalKit
 final class NickViewController: UIViewController, MTKViewDelegate {
     // MARK: - View Property
     private lazy var profileView = ProfileView()
+    
+    private lazy var label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "How to make pixel prettier ?"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .fira(size: 18, weight: .semibold)
+        return label
+    }()
+    
+    private lazy var flippableCardViews: [FlippableCardView] = {
+        return (0..<2).map { _ in FlippableCardView() }
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: flippableCardViews)
+        stackView.axis = .horizontal
+        stackView.spacing = 2
+        stackView.distribution = .fillEqually
+        stackView.alignment = .top
+        stackView.isUserInteractionEnabled = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     // MARK: - Rendering Property
     var mtkView: MTKView!
     var device: MTLDevice!
@@ -29,6 +55,8 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         super.viewDidLoad()
         setupGradientLayer()
         setupMTKView()
+        setupStackViewGesture()
+        setupFlappableViews()
         setViewConstraints()
     }
     
@@ -44,9 +72,30 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
+    private func setupFlappableViews() {
+        let cardConfiguration: [(image: String, frontText: String, backText: String)] = [
+            ("front_1", "My Interests", "I enjoy reading books and playing guitar in my free time"),
+            ("front_2", "Travel Experience",
+             "I have traveled to many contries, including the USA, New Zealand, Germany, Austria, Austrailia, Canada, and Japan")
+        ]
+        
+        zip(flippableCardViews, cardConfiguration).forEach {
+            cardView, config in
+            guard let image = UIImage(named: config.image) else {
+                assertionFailure("Failed to load image for card: \(config.image)")
+                return
+            }
+            
+            cardView.configure(with: image, frontText: config.frontText, backText: config.backText)
+        }
+    }
+    
     private func setViewConstraints() {
         view.addSubview(mtkView)
         view.addSubview(profileView)
+        view.addSubview(label)
+        view.addSubview(stackView)
+        
         mtkView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top)
             make.left.right.equalToSuperview()
@@ -55,7 +104,41 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         
         profileView.snp.makeConstraints { make in
             make.top.equalTo(mtkView.snp.bottom)
-            make.leading.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().inset(10)
+            make.height.equalTo(200)
+        }
+        
+        label.snp.makeConstraints { make in
+            make.top.equalTo(profileView.snp.bottom)
+            make.leading.equalToSuperview().inset(11)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(20)
+            make.bottom.equalTo(view.snp.bottom).inset(20)
+            make.leading.trailing.equalToSuperview().inset(10)
+        }
+    }
+    
+    private func setupStackViewGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStackViewTap(_ :)))
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delaysTouchesBegan = false
+        stackView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleStackViewTap(_ gesture: UITapGestureRecognizer) {
+        let location = gesture.location(in: stackView)
+        // print("Tap Location: \(location)")
+        
+        for (index, cardView) in stackView.arrangedSubviews.enumerated() {
+            // print("Card: \(index) frame: \(cardView.frame)")
+            if cardView.frame.contains(location) {
+                if let flippableCard = cardView as? FlippableCardView {
+                    flippableCard.flipCard()
+                }
+                break;
+            }
         }
     }
     

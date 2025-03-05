@@ -62,7 +62,8 @@ final class ProfileView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "nick_blog_logo")
         imageView.image = image
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -101,23 +102,23 @@ final class ProfileView: UIView {
     private func setViewConstraints() {
         nameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(topMargin)
-            make.leading.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().inset(10)
         }
                 
         roleLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(5)
-            make.leading.equalToSuperview().offset(15)
+            make.leading.equalToSuperview().inset(15)
         }
             
         imageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(topMargin)
-            make.trailing.equalToSuperview().offset(380)
+            make.trailing.equalToSuperview().inset(-380)
             make.width.height.equalTo(72)
         }
                 
         githublogoImageView.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(3)
-            make.leading.equalToSuperview().offset(bounds.width * 0.25)
+            make.leading.equalToSuperview().inset(3)
             make.width.height.equalTo(32)
         }
                 
@@ -128,7 +129,7 @@ final class ProfileView: UIView {
                 
         blogLogoImageView.snp.makeConstraints { make in
             make.top.equalTo(githublogoImageView.snp.bottom).offset(3)
-            make.leading.equalToSuperview().offset(bounds.width * 0.25)
+            make.leading.equalToSuperview().inset(3)
             make.width.height.equalTo(32)
         }
                 
