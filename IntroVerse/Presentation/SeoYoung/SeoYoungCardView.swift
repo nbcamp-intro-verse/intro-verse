@@ -1,10 +1,3 @@
-//
-//  SeoYoungCardView.swift
-//  IntroVerse
-//
-//  Created by hanseoyoung on 3/4/25.
-//
-
 import UIKit
 import SnapKit
 

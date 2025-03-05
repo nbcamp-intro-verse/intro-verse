@@ -282,7 +282,7 @@ final class SeoYoungViewController: UIViewController, UITextViewDelegate {
 
         NotificationCenter.default.addObserver(self, selector: #selector(saveMemo), name: UIApplication.willResignActiveNotification, object: nil)
 
-
+        addTapGestureRecognizers()
     }
 
     func textViewDidChange(_ textView: UITextView) {
@@ -308,6 +308,37 @@ final class SeoYoungViewController: UIViewController, UITextViewDelegate {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    private func addTapGestureRecognizers() {
+        let gitHubTap = AppPageTapGestureRecognizer(page: .gitHub, target: self, action: #selector(handleIconTap(_:)))
+        githubImageView.addGestureRecognizer(gitHubTap)
+
+        let tistoryTap = AppPageTapGestureRecognizer(page: .tistory, target: self, action: #selector(handleIconTap(_:)))
+        tImageView.addGestureRecognizer(tistoryTap)
+
+        let linkedInTap = AppPageTapGestureRecognizer(page: .linkedIn, target: self, action: #selector(handleIconTap(_:)))
+        linkedInImageView.addGestureRecognizer(linkedInTap)
+
+        let labDuckTap = AppPageTapGestureRecognizer(page: .labDuck, target: self, action: #selector(handleIconTap(_:)))
+        labDuckIconImageView.addGestureRecognizer(labDuckTap)
+
+        let pullUpperTap = AppPageTapGestureRecognizer(page: .pullUpper, target: self, action: #selector(handleIconTap(_:)))
+        pullUpperIconImageView.addGestureRecognizer(pullUpperTap)
+
+        let stepsTap = AppPageTapGestureRecognizer(page: .steps, target: self, action: #selector(handleIconTap(_:)))
+        stepsIconImageView.addGestureRecognizer(stepsTap)
+
+        githubImageView.isUserInteractionEnabled = true
+        tImageView.isUserInteractionEnabled = true
+        linkedInImageView.isUserInteractionEnabled = true
+        labDuckIconImageView.isUserInteractionEnabled = true
+        pullUpperIconImageView.isUserInteractionEnabled = true
+        stepsIconImageView.isUserInteractionEnabled = true
+    }
+
+    @objc private func handleIconTap(_ sender: AppPageTapGestureRecognizer) {
+        sender.page.open()
     }
 
     @objc private func keyboardWillShow(notification: Notification) {
