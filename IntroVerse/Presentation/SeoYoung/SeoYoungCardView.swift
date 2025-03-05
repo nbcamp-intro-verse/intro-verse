@@ -11,7 +11,7 @@ import SnapKit
 final class CardView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .largeTitle)
+        label.font = .preferredFont(forTextStyle: .headline)
         label.textColor = .black
         label.textAlignment = .left
         return label
