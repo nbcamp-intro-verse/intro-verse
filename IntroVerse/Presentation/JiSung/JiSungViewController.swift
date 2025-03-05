@@ -2,21 +2,27 @@ import UIKit
 import SnapKit
 
 final class JiSungViewController: UIViewController {
-    private var viewModel = JiSungViewModel()
+    private let jiSungContainerView = JiSungContainerView()
+    private let viewModel = JiSungViewModel()
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "JiSung"
-        label.textAlignment = .center
-        return label
-    }()
+    override func loadView() {
+        view = jiSungContainerView
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+        setupBindings()
+    }
+
+    private func setupBindings() {
+        jiSungContainerView.onGitHubTap = { [weak self] in
+            self?.viewModel.openGitHub()
+        }
+        jiSungContainerView.onBlogTap = { [weak self] in
+            self?.viewModel.openBlog()
+        }
+        jiSungContainerView.onButtonTap = { [weak self] index in
+            self?.jiSungContainerView.setActiveIndex(at: index)
         }
     }
 }
