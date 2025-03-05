@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class SeokHwanKeywordView: UIView {
+final class SeokHwanTMIItem: UIView {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.borderWidth = 1
@@ -17,14 +17,14 @@ final class SeokHwanKeywordView: UIView {
         label.textAlignment = .center
         return label
     }()
-    
+
     convenience init() {
         self.init(frame: .zero)
         configure()
     }
 }
 
-private extension SeokHwanKeywordView {
+private extension SeokHwanTMIItem {
     func configure() {
         configureLayout()
         configureConstraints()
