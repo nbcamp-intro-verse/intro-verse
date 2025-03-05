@@ -3,6 +3,7 @@ import SnapKit
 
 final class JiSungViewController: UIViewController {
     private let jiSungContainerView = JiSungContainerView()
+    private let viewModel = JiSungViewModel()
 
     override func loadView() {
         view = jiSungContainerView
@@ -10,26 +11,18 @@ final class JiSungViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        jiSungContainerView.delegate = self
-    }
-}
-
-extension JiSungViewController: JiSungContainerViewDelegate {
-    func didTapGitHub() {
-        openURL("https://github.com/meowbutlerdev")
+        setupBindings()
     }
 
-    func didTapBlog() {
-        openURL("https://until.blog/@meowbutlerdev")
-    }
-
-    func didTapButton(at index: Int) {
-        jiSungContainerView.handleButtonTap(at: index)
-    }
-
-    private func openURL(_ urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    private func setupBindings() {
+        jiSungContainerView.onGitHubTap = { [weak self] in
+            self?.viewModel.openGitHub()
+        }
+        jiSungContainerView.onBlogTap = { [weak self] in
+            self?.viewModel.openBlog()
+        }
+        jiSungContainerView.onButtonTap = { [weak self] index in
+            self?.jiSungContainerView.updateContent(at: index)
+        }
     }
 }

@@ -1,13 +1,9 @@
 import UIKit
 import SnapKit
 
-protocol JiSungProfileViewDelegate: AnyObject {
-    func didTapGitHub()
-    func didTapBlog()
-}
-
 final class JiSungProfileView: UIView {
-    weak var delegate: JiSungProfileViewDelegate?
+    var onGitHubTap: (() -> Void)?
+    var onBlogTap: (() -> Void)?
 
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -18,25 +14,8 @@ final class JiSungProfileView: UIView {
         return label
     }()
 
-    private let githubLabel: UILabel = {
-        let label = UILabel()
-        label.text = "https://github.com/meowbutlerdev"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textAlignment = .center
-        label.textColor = .white
-        label.isUserInteractionEnabled = true
-        return label
-    }()
-
-    private let blogLabel: UILabel = {
-        let label = UILabel()
-        label.text = "https://until.blog/@meowbutlerdev"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textAlignment = .center
-        label.textColor = .white
-        label.isUserInteractionEnabled = true
-        return label
-    }()
+    private let githubLabel = JiSungProfileView.makeInteractiveLabel("https://github.com/meowbutlerdev")
+    private let blogLabel = JiSungProfileView.makeInteractiveLabel("https://until.blog/@meowbutlerdev")
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,24 +34,25 @@ final class JiSungProfileView: UIView {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 5
-
         addSubview(stackView)
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
 
     private func setupGestureRecognizers() {
-        let githubTap = UITapGestureRecognizer(target: self, action: #selector(didTapGitHub))
-        githubLabel.addGestureRecognizer(githubTap)
-
-        let blogTap = UITapGestureRecognizer(target: self, action: #selector(didTapBlog))
-        blogLabel.addGestureRecognizer(blogTap)
+        githubLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapGitHub)))
+        blogLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapBlog)))
     }
 
-    @objc private func didTapGitHub() {
-        delegate?.didTapGitHub()
-    }
+    @objc private func didTapGitHub() { onGitHubTap?() }
+    @objc private func didTapBlog() { onBlogTap?() }
 
-    @objc private func didTapBlog() {
-        delegate?.didTapBlog()
+    private static func makeInteractiveLabel(_ text: String) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
+        label.textColor = .white
+        label.isUserInteractionEnabled = true
+        return label
     }
 }

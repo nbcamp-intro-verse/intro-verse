@@ -1,24 +1,19 @@
 import UIKit
 import SnapKit
 
-protocol JiSungButtonBarViewDelegate: AnyObject {
-    func didTapButton(at index: Int)
-}
-
 final class JiSungButtonBarView: UIView {
-    weak var delegate: JiSungButtonBarViewDelegate?
-
-    private let backgroundView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .dark)
-        let view = UIVisualEffectView(effect: blurEffect)
-        view.layer.cornerRadius = 31
-        view.layer.masksToBounds = true
-        view.alpha = 0.4
-        return view
-    }()
-
+    var onButtonTap: ((Int) -> Void)?
     private var buttons: [UIButton] = []
     private var selectedButtonIndex = 0
+
+//    private let backgroundView: UIVisualEffectView = {
+//        let blurEffect = UIBlurEffect(style: .dark)
+//        let view = UIVisualEffectView(effect: blurEffect)
+//        view.layer.cornerRadius = 31
+//        view.layer.masksToBounds = true
+//        view.alpha = 0.4
+//        return view
+//    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,11 +30,10 @@ final class JiSungButtonBarView: UIView {
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
 
-        addSubview(backgroundView)
         addSubview(stackView)
-
-        backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
+//        addSubview(backgroundView)
+//        backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         let buttonData = [
             ("🧑‍💻", "소개"),
@@ -71,22 +65,13 @@ final class JiSungButtonBarView: UIView {
     }
 
     private func makeButtonTitle(emoji: String, text: String) -> NSAttributedString {
-        let emojiAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 15, weight: .regular)
-        ]
-
-        let textAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 15, weight: .medium)
-        ]
-
-        let attributedString = NSMutableAttributedString(string: "\(emoji)\n", attributes: emojiAttributes)
-        attributedString.append(NSAttributedString(string: text, attributes: textAttributes))
-
+        let attributedString = NSMutableAttributedString(string: "\(emoji)\n", attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .regular)])
+        attributedString.append(NSAttributedString(string: text, attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]))
         return attributedString
     }
 
     @objc private func didTapButton(_ sender: UIButton) {
-        delegate?.didTapButton(at: sender.tag)
+        onButtonTap?(sender.tag)
         updateActiveButton(at: sender.tag)
     }
 
@@ -97,7 +82,6 @@ final class JiSungButtonBarView: UIView {
         }
         buttons[index].backgroundColor = .white
         buttons[index].setTitleColor(.black, for: .normal)
-
         selectedButtonIndex = index
     }
 }
