@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class SeoYoungViewController: UIViewController {
+final class SeoYoungViewController: UIViewController, UITextViewDelegate {
     private var viewModel = SeoYoungViewModel()
 
     private var titleLabel: UILabel = {
@@ -68,7 +68,7 @@ final class SeoYoungViewController: UIViewController {
         body: """
                 다양한 apple 생태계를 경험해 보았습니다. \
                 VisionOS, MacOS, iOS 그리고 watchOS 까지! \
-                이런 배경지식을 바탕으로 앞으로도 다양한 프로젝트를 해보고 싶어요
+                이런 배경지식을 바탕으로 앞으로도 다양한 프로젝트를 해보고 싶어요 
                 """
     )
 
@@ -98,8 +98,61 @@ final class SeoYoungViewController: UIViewController {
     private let contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layoutMargins = UIEdgeInsets(top: 41, left: 41, bottom: 0, right: 0)
+        view.layoutMargins = UIEdgeInsets(top: 0, left: 41, bottom: 0, right: 41)
         return view
+    }()
+
+    private let labDuckIconImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "AppIcon_LabDuck"))
+        imageView.contentMode = .scaleToFill
+
+        return imageView
+    }()
+
+    private let pullUpperIconImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "AppIcon_PullUpper"))
+        imageView.contentMode = .scaleToFill
+        imageView.layer.cornerRadius = 28
+        imageView.layer.masksToBounds = true
+
+        return imageView
+    }()
+
+    private let stepsIconImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "AppIcon_Steps"))
+        imageView.contentMode = .scaleToFill
+        imageView.layer.cornerRadius = 28
+        imageView.layer.masksToBounds = true
+
+        return imageView
+    }()
+
+    private lazy var appIconStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [labDuckIconImageView, pullUpperIconImageView, stepsIconImageView])
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private let memoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "메모"
+        label.font = .preferredFont(forTextStyle: .headline)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private let memoTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = .systemFont(ofSize: 16)
+        textView.layer.backgroundColor = UIColor(red: 0.851, green: 0.918, blue: 0.992, alpha: 1).cgColor
+        textView.layer.cornerRadius = 20
+        textView.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+
+        return textView
     }()
 
     override func viewDidLoad() {
@@ -107,8 +160,9 @@ final class SeoYoungViewController: UIViewController {
 
         let divider1 = dividerView
         let divider2 = dividerView
+        let divider3 = dividerView
 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(red: 0.973, green: 0.98, blue: 0.988, alpha: 1)
         view.addSubview(titleLabel)
         view.addSubview(profileImageView)
         view.addSubview(informationLabel)
@@ -164,27 +218,115 @@ final class SeoYoungViewController: UIViewController {
         contentView.addSubview(myCooperationCardView)
         contentView.addSubview(divider2)
         contentView.addSubview(myAppsLabel)
+        contentView.addSubview(appIconStackView)
+        contentView.addSubview(divider3)
+        contentView.addSubview(memoLabel)
+        contentView.addSubview(memoTextView)
 
         myAdvantagesCardView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(0)
-            make.left.right.equalToSuperview().inset(41)
+            make.left.right.equalTo(contentView.layoutMarginsGuide)
         }
 
         myCooperationCardView.snp.makeConstraints { make in
             make.top.equalTo(myAdvantagesCardView.snp.bottom).offset(10)
-            make.left.right.equalToSuperview().inset(41)
+            make.left.right.equalTo(contentView.layoutMarginsGuide)
         }
 
         divider2.snp.makeConstraints { make in
             make.top.equalTo(myCooperationCardView.snp.bottom).offset(32)
-            make.left.right.equalToSuperview().inset(41)
+            make.left.right.equalTo(contentView.layoutMarginsGuide)
             make.height.equalTo(1)
         }
 
         myAppsLabel.snp.makeConstraints { make in
             make.top.equalTo(divider2.snp.bottom).offset(32)
-            make.left.right.equalToSuperview().inset(41)
-            make.bottom.equalToSuperview().offset(-32)
+            make.left.right.equalTo(contentView.layoutMarginsGuide)
         }
+
+        [labDuckIconImageView, pullUpperIconImageView, stepsIconImageView].forEach { imageView in
+            imageView.snp.makeConstraints { make in
+                make.width.height.equalTo(100)
+            }
+        }
+
+        appIconStackView.snp.makeConstraints { make in
+            make.top.equalTo(myAppsLabel.snp.bottom).offset(10)
+            make.left.right.equalTo(contentView.layoutMarginsGuide)
+
+        }
+
+        divider3.snp.makeConstraints { make in
+            make.top.equalTo(appIconStackView.snp.bottom).offset(32)
+            make.left.right.equalTo(contentView.layoutMarginsGuide)
+            make.height.equalTo(1)
+        }
+
+        memoLabel.snp.makeConstraints { make in
+            make.top.equalTo(divider3).offset(32)
+            make.left.right.equalTo(contentView.layoutMarginsGuide)
+        }
+
+        memoTextView.snp.makeConstraints { make in
+            make.left.right.equalTo(contentView.layoutMarginsGuide)
+            make.height.equalTo(169)
+            make.top.equalTo(memoLabel.snp.bottom).offset(10)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-32)
+        }
+
+        if let savedMemo = UserDefaults.standard.string(forKey: "memoText") {
+            memoTextView.text = savedMemo
+        }
+
+        memoTextView.delegate = self
+
+        NotificationCenter.default.addObserver(self, selector: #selector(saveMemo), name: UIApplication.willResignActiveNotification, object: nil)
+
+
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        saveMemo()
+    }
+
+    @objc private func saveMemo() {
+        let memo = memoTextView.text ?? ""
+        UserDefaults.standard.set(memo, forKey: "memoText")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(notification:)),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc private func keyboardWillShow(notification: Notification) {
+        guard let keyboardFrameValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = keyboardFrameValue.cgRectValue
+
+        let offset = keyboardFrame.height / 2
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame.origin.y = -offset
+        }
+    }
+
+    @objc private func keyboardWillHide(notification: Notification) {
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame.origin.y = 0
+        }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
