@@ -129,10 +129,7 @@ final class NickViewController: UIViewController, MTKViewDelegate {
     
     @objc private func handleStackViewTap(_ gesture: UITapGestureRecognizer) {
         let location = gesture.location(in: stackView)
-        // print("Tap Location: \(location)")
-        
-        for (index, cardView) in stackView.arrangedSubviews.enumerated() {
-            // print("Card: \(index) frame: \(cardView.frame)")
+        for (_, cardView) in stackView.arrangedSubviews.enumerated() {
             if cardView.frame.contains(location) {
                 if let flippableCard = cardView as? FlippableCardView {
                     flippableCard.flipCard()
