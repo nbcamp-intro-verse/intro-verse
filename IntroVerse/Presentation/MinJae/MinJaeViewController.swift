@@ -45,6 +45,15 @@ final class MinJaeViewController: UIViewController {
     }
 }
 
+extension MinJaeViewController: MinjaeMainCollectionViewDelegate {
+    func linkButtonTapped(url: URL) {
+        DispatchQueue.main.async { [weak self] in
+            let safariView = SFSafariViewController(url: url)
+            self?.present(safariView, animated: true)
+        }
+    }
+}
+
 struct Constant {
     static var imageURL = "https://github.com/user-attachments/assets/7083f9cd-4418-4107-937e-e6c56659e255"
 }
