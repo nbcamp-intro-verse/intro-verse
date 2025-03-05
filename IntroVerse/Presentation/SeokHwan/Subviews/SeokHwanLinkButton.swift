@@ -15,9 +15,9 @@ final class SeokHwanLinkButton: UIButton {
         var imageName: String {
             switch self {
             case .blog:
-                return "figure.tennis"
+                return "SeokHwanBlog"
             case .github:
-                return "figure.tennis"
+                return "SeokHwanGitHub"
             default:
                 return ""
             }
@@ -53,9 +53,10 @@ private extension SeokHwanLinkButton {
     func configure() {
         var configuration = UIButton.Configuration.plain()
         configuration.title = linkButtonType.rawValue
-        configuration.image = UIImage(systemName: linkButtonType.imageName)
+        configuration.image = UIImage(named: linkButtonType.imageName)
         configuration.imagePlacement = .leading
         configuration.imagePadding = 10
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 30)
         configuration.baseForegroundColor = .black
         self.configuration = configuration
 
