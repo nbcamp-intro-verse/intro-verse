@@ -44,14 +44,24 @@ final class MinjaeContentStackView: UIStackView {
         return sv
     }()
     
+    private let descriptionLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "설명"
+        lb.numberOfLines = 0
+        lb.textColor = .white
+        return lb
+    }()
+    
     private lazy var memoTitleStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fill
+        stackView.spacing = 10
         let titleLabel = UILabel()
         titleLabel.text = "메모"
+        titleLabel.font = .boldSystemFont(ofSize: 20)
         let addBtn = UIButton()
-        addBtn.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+        addBtn.setImage(UIImage(systemName: "square.and.pencil", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold, scale: .large)), for: .normal)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(addBtn)
         return stackView
@@ -63,15 +73,15 @@ final class MinjaeContentStackView: UIStackView {
         return btn
     }()
     
-    private let descriptionLabel: UILabel = {
-        let lb = UILabel()
-        lb.text = "설명"
-        lb.numberOfLines = 0
-        lb.textColor = .white
-        return lb
+    private let memoStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        sv.alignment = .leading
+        sv.distribution = .fill
+        return sv
     }()
     
-    private lazy var views: [UIView] = [titleLabel, nameLabel, birthLabel, mbtiStackView, descriptionLabel, memoTitleStackView]
+    private lazy var views: [UIView] = [titleLabel, nameLabel, birthLabel, mbtiStackView, descriptionLabel, memoTitleStackView, memoStackView]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -122,6 +132,7 @@ final class MinjaeContentStackView: UIStackView {
             descriptionLabel.font = .boldSystemFont(ofSize: 25)
             descriptionLabel.textAlignment = .center
             descriptionLabel.textColor = .black
+        case .memo:
         default:
             titleLabel.font = .systemFont(ofSize: 15)
             descriptionLabel.font = .boldSystemFont(ofSize: 17)
