@@ -14,16 +14,20 @@ final class JiSungContainerView: UIView {
     private let contentView = JiSungContentView()
     private let memoView = JiSungMemoView()
 
+    private var activeIndex = 0
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
         setupActions()
+        setActiveIndex(at: activeIndex)
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
         setupActions()
+        setActiveIndex(at: activeIndex)
     }
 
     private func setupView() {
@@ -76,10 +80,12 @@ final class JiSungContainerView: UIView {
     private func setupActions() {
         profileView.onGitHubTap = { [weak self] in self?.onGitHubTap?() }
         profileView.onBlogTap = { [weak self] in self?.onBlogTap?() }
-        buttonBarView.onButtonTap = { [weak self] index in self?.onButtonTap?(index) }
+        buttonBarView.onButtonTap = { [weak self] index in self?.setActiveIndex(at: index) }
     }
 
-    func updateContent(at index: Int) {
-        contentView.updateContent(at: index)
+    func setActiveIndex(at index: Int) {
+        activeIndex = index
+        buttonBarView.setActiveButton(at: index)
+        contentView.setActiveContent(at: index)
     }
 }

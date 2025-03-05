@@ -14,7 +14,6 @@ final class JiSungButtonBarView: UIView {
     }()
 
     private var buttons: [UIButton] = []
-    private var selectedButtonIndex = 0
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -50,8 +49,6 @@ final class JiSungButtonBarView: UIView {
             buttons.append(button)
             stackView.addArrangedSubview(button)
         }
-
-        updateActiveButton(at: selectedButtonIndex)
     }
 
     private func createButton(emoji: String, text: String) -> UIButton {
@@ -74,16 +71,15 @@ final class JiSungButtonBarView: UIView {
 
     @objc private func didTapButton(_ sender: UIButton) {
         onButtonTap?(sender.tag)
-        updateActiveButton(at: sender.tag)
+        setActiveButton(at: sender.tag)
     }
 
-    private func updateActiveButton(at index: Int) {
+    func setActiveButton(at index: Int) {
         buttons.forEach {
             $0.backgroundColor = .clear
             $0.setTitleColor(.white, for: .normal)
         }
         buttons[index].backgroundColor = .white
         buttons[index].setTitleColor(.black, for: .normal)
-        selectedButtonIndex = index
     }
 }

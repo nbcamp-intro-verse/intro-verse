@@ -49,7 +49,7 @@ final class JiSungContentView: UIView {
         }
     }
 
-    func updateContent(at index: Int) {
+    func setActiveContent(at index: Int) {
         guard index >= 0, index < contents.count else { return }
         contentLabel.text = contents[index]
     }

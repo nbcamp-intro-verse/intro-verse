@@ -22,7 +22,7 @@ final class JiSungViewController: UIViewController {
             self?.viewModel.openBlog()
         }
         jiSungContainerView.onButtonTap = { [weak self] index in
-            self?.jiSungContainerView.updateContent(at: index)
+            self?.jiSungContainerView.setActiveIndex(at: index)
         }
     }
 }
