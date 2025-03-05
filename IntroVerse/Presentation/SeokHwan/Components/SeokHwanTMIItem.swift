@@ -14,6 +14,7 @@ final class SeokHwanTMIItem: UIView {
         label.text = "textLabel"
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.font = UIFont(name: "GmarketSansTTFMedium", size: 16)
         return label
     }()
 

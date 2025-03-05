@@ -5,19 +5,20 @@ final class SeokHwanHeaderView: UIView {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "유석환"
-        label.font = .boldSystemFont(ofSize: 40)
+        label.font = UIFont(name: "GmarketSansTTFBold", size: 32)
         return label
     }()
     private lazy var birthdayLabel: UILabel = {
         let label = UILabel()
         label.text = "1997.01.15"
-        label.textColor = .systemGray
+        label.textColor = .darkGray
+        label.font = UIFont(name: "GmarketSansTTFLight", size: 16)
         return label
     }()
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "iOS 마스터 6기 유석환입니다! 잘부탁드립니다~"
-        label.numberOfLines = 0
+        label.text = "iOS 마스터 6기 유석환입니다!"
+        label.font = UIFont(name: "GmarketSansTTFMedium", size: 18)
         return label
     }()
     private lazy var githubLinkButton = SeokHwanLinkButton(.github)
@@ -55,7 +56,7 @@ private extension SeokHwanHeaderView {
             make.top.leading.equalToSuperview()
         }
         birthdayLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom)
+            make.top.equalTo(nameLabel.snp.bottom).offset(5)
             make.leading.equalToSuperview()
         }
         descriptionLabel.snp.makeConstraints { make in

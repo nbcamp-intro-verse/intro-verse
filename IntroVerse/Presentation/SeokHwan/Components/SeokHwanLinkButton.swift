@@ -8,8 +8,8 @@ protocol SeokHwanLinkButtonDelegate: AnyObject {
 
 final class SeokHwanLinkButton: UIButton {
     enum LinkButtonType: String {
-        case blog = "Blog"
-        case github = "GitHub"
+        case blog = "블로그"
+        case github = "깃허브"
         case none
 
         var imageName: String {
@@ -51,15 +51,23 @@ final class SeokHwanLinkButton: UIButton {
 
 private extension SeokHwanLinkButton {
     func configure() {
+        var titleContainer = AttributeContainer()
+        var subtitleContainer = AttributeContainer()
         var configuration = UIButton.Configuration.plain()
-        configuration.title = linkButtonType.rawValue
+
+        titleContainer.font = UIFont(name: "GmarketSansTTFMedium", size: 14)
+        subtitleContainer.font = UIFont(name: "GmarketSansTTFMedium", size: 12)
+        configuration.attributedTitle = AttributedString(linkButtonType.rawValue,
+                                                         attributes: titleContainer)
+        configuration.attributedSubtitle = AttributedString(linkButtonType.urlString,
+                                                            attributes: subtitleContainer)
         configuration.image = UIImage(named: linkButtonType.imageName)
         configuration.imagePlacement = .leading
         configuration.imagePadding = 10
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 30)
         configuration.baseForegroundColor = .black
-        self.configuration = configuration
 
+        self.configuration = configuration
         backgroundColor = UIColor(named: "SeokHwanLinkButtonBackground")
         layer.cornerRadius = 10
         addTarget(self, action: #selector(didTapLinkButton(_:)), for: .touchUpInside)
