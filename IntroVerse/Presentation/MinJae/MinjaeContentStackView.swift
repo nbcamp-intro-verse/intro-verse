@@ -102,45 +102,32 @@ final class MinjaeContentStackView: UIStackView {
         case .information:
             guard let name = model.content.name, let birth = model.content.birth else { return }
             nameLabel.text = name
+            nameLabel.font = .boldSystemFont(ofSize: 45)
             birthLabel.text = birth
+            birthLabel.font = .systemFont(ofSize: 15)
         case .motto:
             guard let title = model.content.title, let description = model.content.description else { return }
             titleLabel.text = title
             descriptionLabel.text = description
+            descriptionLabel.font = .boldSystemFont(ofSize: 25)
+            descriptionLabel.textAlignment = .center
+            descriptionLabel.textColor = .black
         case .introduce:
             guard let title = model.content.title, let description = model.content.description else { return }
+            titleLabel.font = .systemFont(ofSize: 15)
+            descriptionLabel.font = .boldSystemFont(ofSize: 17)
             titleLabel.text = title
             descriptionLabel.text = description
         case .talk:
             guard let title = model.content.title, let description = model.content.description else { return }
-            titleLabel.text = title
-            descriptionLabel.text = description
-        case .memo:
-            guard let title = model.content.title, let description = model.content.description else { return }
-            titleLabel.text = title
-            descriptionLabel.text = description
-        }
-        configureLayout(model: model)
-    }
-    
-    private func configureLayout(model: ContentType) {
-        switch model {
-        case .information:
-            nameLabel.font = .boldSystemFont(ofSize: 45)
-            birthLabel.font = .systemFont(ofSize: 15)
-        case .motto:
-            descriptionLabel.font = .boldSystemFont(ofSize: 25)
-            descriptionLabel.textAlignment = .center
-            descriptionLabel.textColor = .black
-        case .memo:
-            memos.forEach { memo in
-                let label = UILabel()
-                label.text = memo
-                memoStackView.addArrangedSubview(label)
-            }
-        default:
             titleLabel.font = .systemFont(ofSize: 15)
             descriptionLabel.font = .boldSystemFont(ofSize: 17)
+            titleLabel.text = title
+            descriptionLabel.text = description
+        case .memo:
+            MinJaeViewModel.memos.forEach { memo in
+                memoStackView.addArrangedSubview(setMemoLabel(text: memo))
+            }
         }
     }
     
