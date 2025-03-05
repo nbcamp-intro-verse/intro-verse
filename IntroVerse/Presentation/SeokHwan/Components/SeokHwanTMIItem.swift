@@ -2,15 +2,14 @@ import UIKit
 import SnapKit
 
 final class SeokHwanTMIItem: UIView {
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.borderWidth = 1
         imageView.layer.cornerRadius = 10
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(systemName: "house.circle")
         return imageView
     }()
-    private lazy var textLabel: UILabel = {
+    lazy var textLabel: UILabel = {
         let label = UILabel()
         label.text = "textLabel"
         label.numberOfLines = 0
@@ -18,16 +17,17 @@ final class SeokHwanTMIItem: UIView {
         return label
     }()
 
-    convenience init() {
+    convenience init(imageName: String, text: String) {
         self.init(frame: .zero)
-        configure()
+        configure(imageName: imageName, text: text)
     }
 }
 
 private extension SeokHwanTMIItem {
-    func configure() {
+    func configure(imageName: String, text: String) {
         configureLayout()
         configureConstraints()
+        configureAttributes(imageName: imageName, text: text)
     }
 
     func configureLayout() {
@@ -48,5 +48,10 @@ private extension SeokHwanTMIItem {
             make.trailing.equalToSuperview()
             make.centerY.equalTo(imageView.snp.centerY)
         }
+    }
+
+    func configureAttributes(imageName: String, text: String) {
+        imageView.image = UIImage(named: imageName)
+        textLabel.text = text
     }
 }

@@ -15,9 +15,9 @@ final class SeokHwanLinkButton: UIButton {
         var imageName: String {
             switch self {
             case .blog:
-                return "SeokHwanBlog"
+                return "SeokHwanBlogLogo"
             case .github:
-                return "SeokHwanGitHub"
+                return "SeokHwanGitHubLogo"
             default:
                 return ""
             }
