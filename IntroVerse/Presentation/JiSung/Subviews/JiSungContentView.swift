@@ -20,6 +20,12 @@ final class JiSungContentView: UIView {
         return label
     }()
 
+    private let contents = [
+        "소개 내용",
+        "협업 스타일 내용",
+        "장점 내용"
+    ]
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -43,7 +49,8 @@ final class JiSungContentView: UIView {
         }
     }
 
-    func upDateContent(text: String) {
-        contentLabel.text = text
+    func updateContent(at index: Int) {
+        guard index >= 0, index < contents.count else { return }
+        contentLabel.text = contents[index]
     }
 }

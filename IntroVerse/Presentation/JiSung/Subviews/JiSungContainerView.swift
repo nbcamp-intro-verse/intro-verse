@@ -4,6 +4,7 @@ import SnapKit
 protocol JiSungContainerViewDelegate: AnyObject {
     func didTapGitHub()
     func didTapBlog()
+    func didTapButton(at index: Int)
 }
 
 final class JiSungContainerView: UIView {
@@ -11,21 +12,24 @@ final class JiSungContainerView: UIView {
 
     private let scrollView = UIScrollView()
     private let scrollContainerView = UIView()
+    private let blurBoxView = JiSungBlurBoxView()
 
     let profileView = JiSungProfileView()
-    let buttonBar = JiSungButtonBar()
+    let buttonBarView = JiSungButtonBarView()
     let contentView = JiSungContentView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
         profileView.delegate = self
+        buttonBarView.delegate = self
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
         profileView.delegate = self
+        buttonBarView.delegate = self
     }
 
     private func setupView() {
@@ -34,8 +38,9 @@ final class JiSungContainerView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(scrollContainerView)
 
+        scrollContainerView.addSubview(blurBoxView)
         scrollContainerView.addSubview(profileView)
-        scrollContainerView.addSubview(buttonBar)
+        scrollContainerView.addSubview(buttonBarView)
         scrollContainerView.addSubview(contentView)
 
         backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
@@ -54,17 +59,23 @@ final class JiSungContainerView: UIView {
             make.top.equalTo(scrollContainerView.snp.top).offset(UIScreen.main.bounds.height * 0.3)
         }
 
-        buttonBar.snp.makeConstraints { make in
+        buttonBarView.snp.makeConstraints { make in
             make.top.equalTo(profileView.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(62)
         }
 
         contentView.snp.makeConstraints { make in
-            make.top.equalTo(buttonBar.snp.bottom).offset(20)
+            make.top.equalTo(buttonBarView.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(50)
             make.height.greaterThanOrEqualTo(200)
+        }
+
+        blurBoxView.snp.makeConstraints { make in
+            make.top.equalTo(profileView.snp.top).offset(-20)
+            make.bottom.equalTo(contentView.snp.bottom).offset(20)
+            make.width.equalToSuperview()
         }
     }
 }
@@ -76,5 +87,15 @@ extension JiSungContainerView: JiSungProfileViewDelegate {
 
     func didTapBlog() {
         delegate?.didTapBlog()
+    }
+}
+
+extension JiSungContainerView: JiSungButtonBarViewDelegate {
+    func didTapButton(at index: Int) {
+        delegate?.didTapButton(at: index)
+    }
+
+    func handleButtonTap(at index: Int) {
+        contentView.updateContent(at: index)
     }
 }

@@ -1,7 +1,13 @@
 import UIKit
 import SnapKit
 
-final class JiSungButtonBar: UIView {
+protocol JiSungButtonBarViewDelegate: AnyObject {
+    func didTapButton(at index: Int)
+}
+
+final class JiSungButtonBarView: UIView {
+    weak var delegate: JiSungButtonBarViewDelegate?
+
     private let backgroundView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
@@ -12,8 +18,7 @@ final class JiSungButtonBar: UIView {
     }()
 
     private var buttons: [UIButton] = []
-    
-    var onButtonSelected: ((Int) -> Void)?
+    private var selectedButtonIndex = 0
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,7 +40,6 @@ final class JiSungButtonBar: UIView {
 
         backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
-        stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         let buttonData = [
             ("🧑‍💻", "소개"),
@@ -46,10 +50,12 @@ final class JiSungButtonBar: UIView {
         for (index, (emoji, text)) in buttonData.enumerated() {
             let button = createButton(emoji: emoji, text: text)
             button.tag = index
-            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
             buttons.append(button)
             stackView.addArrangedSubview(button)
         }
+
+        updateActiveButton(at: selectedButtonIndex)
     }
 
     private func createButton(emoji: String, text: String) -> UIButton {
@@ -79,17 +85,19 @@ final class JiSungButtonBar: UIView {
         return attributedString
     }
 
-    @objc private func buttonTapped(_ sender: UIButton) {
-        activateButton(at: sender.tag)
-        onButtonSelected?(sender.tag)
+    @objc private func didTapButton(_ sender: UIButton) {
+        delegate?.didTapButton(at: sender.tag)
+        updateActiveButton(at: sender.tag)
     }
 
-    func activateButton(at index: Int) {
+    private func updateActiveButton(at index: Int) {
         buttons.forEach {
             $0.backgroundColor = .clear
             $0.setTitleColor(.white, for: .normal)
         }
         buttons[index].backgroundColor = .white
         buttons[index].setTitleColor(.black, for: .normal)
+
+        selectedButtonIndex = index
     }
 }
