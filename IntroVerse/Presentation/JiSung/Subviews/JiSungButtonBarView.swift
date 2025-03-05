@@ -3,17 +3,18 @@ import SnapKit
 
 final class JiSungButtonBarView: UIView {
     var onButtonTap: ((Int) -> Void)?
+
+    private let backgroundView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.layer.cornerRadius = 31
+        view.layer.masksToBounds = true
+        view.alpha = 0.4
+        return view
+    }()
+
     private var buttons: [UIButton] = []
     private var selectedButtonIndex = 0
-
-//    private let backgroundView: UIVisualEffectView = {
-//        let blurEffect = UIBlurEffect(style: .dark)
-//        let view = UIVisualEffectView(effect: blurEffect)
-//        view.layer.cornerRadius = 31
-//        view.layer.masksToBounds = true
-//        view.alpha = 0.4
-//        return view
-//    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,10 +31,11 @@ final class JiSungButtonBarView: UIView {
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
 
+        addSubview(backgroundView)
         addSubview(stackView)
+
+        backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
-//        addSubview(backgroundView)
-//        backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         let buttonData = [
             ("🧑‍💻", "소개"),
