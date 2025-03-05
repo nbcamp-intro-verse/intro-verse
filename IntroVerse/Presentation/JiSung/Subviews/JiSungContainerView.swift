@@ -21,6 +21,7 @@ final class JiSungContainerView: UIView {
         setupView()
         setupActions()
         setActiveIndex(at: activeIndex)
+        setupTapGesture()
     }
 
     required init?(coder: NSCoder) {
@@ -28,6 +29,7 @@ final class JiSungContainerView: UIView {
         setupView()
         setupActions()
         setActiveIndex(at: activeIndex)
+        setupTapGesture()
     }
 
     private func setupView() {
@@ -62,13 +64,11 @@ final class JiSungContainerView: UIView {
         contentView.snp.makeConstraints { make in
             make.top.equalTo(buttonBarView.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.greaterThanOrEqualTo(200)
         }
         memoView.snp.makeConstraints { make in
             make.top.equalTo(contentView.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(50)
-            make.height.greaterThanOrEqualTo(100)
         }
         blurBoxView.snp.makeConstraints { make in
             make.top.equalTo(profileView.snp.top).offset(-20)
@@ -87,5 +87,15 @@ final class JiSungContainerView: UIView {
         activeIndex = index
         buttonBarView.setActiveButton(at: index)
         contentView.setActiveContent(at: index)
+    }
+
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func dismissKeyboard() {
+        endEditing(true)
     }
 }
