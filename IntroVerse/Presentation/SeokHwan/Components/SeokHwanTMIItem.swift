@@ -18,16 +18,16 @@ final class SeokHwanTMIItem: UIView {
         return label
     }()
 
-    convenience init(imageName: String, text: String) {
+    convenience init(imageName: String, text: String, isImagePositionRight: Bool = false) {
         self.init(frame: .zero)
-        configure(imageName: imageName, text: text)
+        configure(imageName: imageName, text: text, isImagePositionRight: isImagePositionRight)
     }
 }
 
 private extension SeokHwanTMIItem {
-    func configure(imageName: String, text: String) {
+    func configure(imageName: String, text: String, isImagePositionRight: Bool) {
         configureLayout()
-        configureConstraints()
+        configureConstraints(isImagePositionRight: isImagePositionRight)
         configureAttributes(imageName: imageName, text: text)
     }
 
@@ -36,17 +36,28 @@ private extension SeokHwanTMIItem {
         addSubview(textLabel)
     }
 
-    func configureConstraints() {
+    func configureConstraints(isImagePositionRight: Bool) {
         snp.makeConstraints { make in
             make.height.equalTo(60)
         }
         imageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            switch isImagePositionRight {
+            case true:
+                make.trailing.equalToSuperview().inset(10)
+            case false:
+                make.leading.equalToSuperview().inset(10)
+            }
             make.width.height.equalTo(60)
         }
         textLabel.snp.makeConstraints { make in
-            make.leading.equalTo(imageView.snp.trailing).offset(20)
-            make.trailing.equalToSuperview()
+            switch isImagePositionRight {
+            case true:
+                make.trailing.equalTo(imageView.snp.leading).offset(-20)
+                make.leading.equalToSuperview()
+            case false:
+                make.leading.equalTo(imageView.snp.trailing).offset(20)
+                make.trailing.equalToSuperview()
+            }
             make.centerY.equalTo(imageView.snp.centerY)
         }
     }
