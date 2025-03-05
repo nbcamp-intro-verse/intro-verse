@@ -1,7 +1,14 @@
 import UIKit
 import SnapKit
 
+protocol JiSungProfileViewDelegate: AnyObject {
+    func didTapGitHub()
+    func didTapBlog()
+}
+
 final class JiSungProfileView: UIView {
+    weak var delegate: JiSungProfileViewDelegate?
+
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "박지성"
@@ -16,7 +23,8 @@ final class JiSungProfileView: UIView {
         label.text = "https://github.com/meowbutlerdev"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
-        label.textColor = .lightGray
+        label.textColor = .white
+        label.isUserInteractionEnabled = true
         return label
     }()
 
@@ -25,18 +33,21 @@ final class JiSungProfileView: UIView {
         label.text = "https://until.blog/@meowbutlerdev"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
-        label.textColor = .lightGray
+        label.textColor = .white
+        label.isUserInteractionEnabled = true
         return label
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
+        setupGestureRecognizers()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
+        setupGestureRecognizers()
     }
 
     private func setupView() {
@@ -47,5 +58,21 @@ final class JiSungProfileView: UIView {
 
         addSubview(stackView)
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
+    }
+
+    private func setupGestureRecognizers() {
+        let githubTap = UITapGestureRecognizer(target: self, action: #selector(didTapGitHub))
+        githubLabel.addGestureRecognizer(githubTap)
+
+        let blogTap = UITapGestureRecognizer(target: self, action: #selector(didTapBlog))
+        blogLabel.addGestureRecognizer(blogTap)
+    }
+
+    @objc private func didTapGitHub() {
+        delegate?.didTapGitHub()
+    }
+
+    @objc private func didTapBlog() {
+        delegate?.didTapBlog()
     }
 }

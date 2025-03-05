@@ -10,6 +10,9 @@ final class JiSungViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        jiSungView.delegate = self
+
         setupInitialSelection()
 
         jiSungView.buttonBar.onButtonSelected = { [weak self] index in
@@ -33,5 +36,20 @@ final class JiSungViewController: UIViewController {
         if index < contentTexts.count {
             jiSungView.contentView.upDateContent(text: contentTexts[index])
         }
+    }
+}
+
+extension JiSungViewController: JiSungViewDelegate {
+    func didTapGitHub() {
+        openURL("https://github.com/meowbutlerdev")
+    }
+
+    func didTapBlog() {
+        openURL("https://until.blog/@meowbutlerdev")
+    }
+
+    private func openURL(_ urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }

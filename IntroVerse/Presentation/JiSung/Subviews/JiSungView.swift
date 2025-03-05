@@ -1,7 +1,14 @@
 import UIKit
 import SnapKit
 
+protocol JiSungViewDelegate: AnyObject {
+    func didTapGitHub()
+    func didTapBlog()
+}
+
 final class JiSungView: UIView {
+    weak var delegate: JiSungViewDelegate?
+
     private let scrollView = UIScrollView()
     private let scrollContainerView = UIView()
 
@@ -12,11 +19,13 @@ final class JiSungView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
+        profileView.delegate = self
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
+        profileView.delegate = self
     }
 
     private func setupView() {
@@ -58,6 +67,14 @@ final class JiSungView: UIView {
             make.height.greaterThanOrEqualTo(200)
         }
     }
+}
 
-    
+extension JiSungView: JiSungProfileViewDelegate {
+    func didTapGitHub() {
+        delegate?.didTapGitHub()
+    }
+
+    func didTapBlog() {
+        delegate?.didTapBlog()
+    }
 }
