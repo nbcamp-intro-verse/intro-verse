@@ -37,13 +37,11 @@ private extension SeokHwanViewController {
     }
 
     func configureDelegates() {
+        scrollView.delegate = self
         headerView.delegate = self
     }
 
     func configureConstraints() {
-        stickyHeaderView.snp.makeConstraints { make in
-            make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
-        }
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
@@ -71,6 +69,10 @@ private extension SeokHwanViewController {
             make.centerX.equalToSuperview()
             make.bottom.equalTo(contentView.snp.bottom).inset(20)
         }
+        stickyHeaderView.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(62)
+        }
     }
 }
 
@@ -78,6 +80,19 @@ extension SeokHwanViewController: SeokHwanLinkButtonDelegate {
     func didTapLinkButton(_ type: LinkButtonType) {
         if let url = URL(string: type.urlString) {
             UIApplication.shared.open(url, options: [:])
+        }
+    }
+}
+
+extension SeokHwanViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollOffsetY = scrollView.contentOffset.y
+        let nameLabelThreshold = headerView.frame.origin.y - 20.0
+        let tmiLabelThreshold = divider.frame.origin.y - 62.0
+
+        stickyHeaderView.isHidden = scrollOffsetY <= nameLabelThreshold
+        UIView.animate(withDuration: 0.25) {
+            self.stickyHeaderView.tmiLabel.alpha = scrollOffsetY <= tmiLabelThreshold ? 0.0 : 1.0
         }
     }
 }

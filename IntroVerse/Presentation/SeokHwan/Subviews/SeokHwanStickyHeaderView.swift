@@ -6,13 +6,13 @@ final class SeokHwanStickyHeaderView: UIView {
         let label = UILabel()
         label.text = "유석환"
         label.font = UIFont(name: "GmarketSansTTFBold", size: 32)
-        label.textColor = .blue
         return label
     }()
     lazy var tmiLabel: UILabel = {
         let label = UILabel()
         label.text = "'s TMI"
-        label.font = UIFont(name: "GmarketSansTTFMedium", size: 24)
+        label.font = UIFont(name: "GmarketSansTTFLight", size: 24)
+        label.alpha = 0.0
         return label
     }()
 
@@ -29,13 +29,15 @@ private extension SeokHwanStickyHeaderView {
     }
 
     func configureLayout() {
+        backgroundColor = UIColor(named: "SeokHwanBackground")
+        isHidden = true
         addSubview(nameLabel)
         addSubview(tmiLabel)
     }
 
     func configureConstraints() {
         nameLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+            make.top.leading.equalToSuperview().inset(20)
         }
         tmiLabel.snp.makeConstraints { make in
             make.bottom.equalTo(nameLabel.snp.bottom)
