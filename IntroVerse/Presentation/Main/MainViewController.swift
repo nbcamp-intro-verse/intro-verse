@@ -3,8 +3,7 @@ import SnapKit
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
-    let cache: ImageCache
-    let imageRepository: ImageRepository
+    private var viewModel = MainViewModel()
 
     private var dummyColors: [UIColor] = [.blue, .red, .orange, .yellow, .green, .blue, .red]
     
@@ -36,14 +35,10 @@ final class MainViewController: UIViewController {
     
     // MARK: - Initializers
     init() {
-        self.cache = ImageCache()
-        self.imageRepository = ImageRepository(cache: cache)
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
-        self.cache = ImageCache()
-        self.imageRepository = ImageRepository(cache: cache)
         super.init(coder: coder)
     }
 
