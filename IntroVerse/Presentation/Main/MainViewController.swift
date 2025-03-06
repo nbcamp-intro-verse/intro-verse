@@ -3,6 +3,8 @@ import SnapKit
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
+    let cache: ImageCache
+    let imageRepository: ImageRepository
 
     private var dummyColors: [UIColor] = [.blue, .red, .orange, .yellow, .green, .blue, .red]
     
