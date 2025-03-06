@@ -1,0 +1,139 @@
+import UIKit
+import SnapKit
+
+class IntroViewController: UIViewController {
+
+    private let topLabel: UILabel = {
+        let label = UILabel()
+        label.text = "iOS 마스터 6기 4조"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        label.textAlignment = .center
+
+        return label
+    }()
+
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "IntroVerse"
+        label.font = .preferredFont(forTextStyle: .largeTitle)
+        label.textAlignment = .center
+
+        return label
+    }()
+
+    private let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.text = """
+        안녕하세요. 우리팀 설명 텍스트입니다.
+        안녕하세요. 우리팀 설명 텍스트입니다.
+        안녕하세요. 우리팀 설명 텍스트입니다.
+        안녕하세요. 우리팀 설명 텍스트입니다.
+        """
+        label.font = .preferredFont(forTextStyle: .body)
+
+        return label
+    }()
+
+    private let githubButton: UIButton = {
+        let resizedImage = UIImage(named: "gitHubIcon_white")?.resize(targetSize: CGSize(width: 20, height: 20))
+        let button = UIButton(type: .custom)
+        button.setTitle("GitHub", for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
+        button.setImage(resizedImage, for: .normal)
+        button.backgroundColor = .black
+        button.tintColor = .white
+        button.layer.cornerRadius = 8
+        button.contentHorizontalAlignment = .center
+
+
+        return button
+
+    }()
+
+    private let notionButton: UIButton = {
+        let resizedImage = UIImage(named: "notionIcon_white")?.resize(targetSize: CGSize(width: 20, height: 20))
+        let button = UIButton(type: .custom)
+        button.setImage(resizedImage, for: .normal)
+        button.setTitle("Notion", for: .normal)
+        button.tintColor = .white
+        button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
+        button.setTitleColor(.white, for: .normal)
+        button.contentHorizontalAlignment = .center
+        button.backgroundColor = .black
+        button.layer.cornerRadius = 8
+
+        return button
+    }()
+
+    // MARK: - View Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+
+        view.addSubview(topLabel)
+        view.addSubview(titleLabel)
+        view.addSubview(descriptionLabel)
+        view.addSubview(githubButton)
+        view.addSubview(notionButton)
+
+        githubButton.addTarget(self, action: #selector(githubButtonTapped), for: .touchUpInside)
+        notionButton.addTarget(self, action: #selector(notionButtonTapped), for: .touchUpInside)
+
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
+        topLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
+
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(topLabel.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
+
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(40)
+        }
+
+        githubButton.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(40)
+            make.trailing.equalTo(view.snp.centerX).offset(-20)
+            make.width.equalTo(100)
+            make.height.equalTo(32)
+        }
+
+        notionButton.snp.makeConstraints { make in
+            make.centerY.equalTo(githubButton)
+            make.leading.equalTo(view.snp.centerX).offset(20)
+            make.width.equalTo(100)
+            make.height.equalTo(32)
+        }
+    }
+
+    // MARK: - Actions
+    @objc private func githubButtonTapped() {
+        SeoYoungLinkPage.mainGithub.open()
+    }
+
+    @objc private func notionButtonTapped() {
+        SeoYoungLinkPage.mainNotion.open()
+    }
+}
+
+extension UIImage {
+    func resize(targetSize: CGSize) -> UIImage? {
+        let newRect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height).integral
+        UIGraphicsBeginImageContextWithOptions(newRect.size, true, 0)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        context.interpolationQuality = .high
+        draw(in: newRect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+}

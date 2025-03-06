@@ -7,6 +7,8 @@ enum SeoYoungLinkPage: String {
     case labDuck = "https://apps.apple.com/kr/app/labduck/id6503278883?mt=12"
     case pullUpper = "https://apps.apple.com/kr/app/pullupper/id6504814983"
     case steps = "https://apps.apple.com/kr/app/%EA%B3%84%EB%8B%A8%EC%82%AC%EB%9E%91%EB%8B%A8/id6737301392"
+    case mainGithub = "https://github.com/nbcamp-intro-verse/intro-verse"
+    case mainNotion = "https://teamsparta.notion.site/4-1aa2dc3ef514804e8d02c59d96197123"
 
     func open() {
         guard let url = URL(string: rawValue) else { return }
