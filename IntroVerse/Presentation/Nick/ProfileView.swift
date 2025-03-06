@@ -46,12 +46,12 @@ final class ProfileView: UIView {
         return imageView
     }()
     
-    private lazy var githubLabel: UILabel = {
+    public lazy var githubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = " : https://github.com/sjang1594"
         label.textColor = .white
-        label.font = .fira(size: 18, weight: .semibold)
+        label.font = .fira(size: 18, weight: .light)
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
         return label
@@ -67,12 +67,12 @@ final class ProfileView: UIView {
         return imageView
     }()
     
-    private lazy var blogLabel: UILabel = {
+    public lazy var blogLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = " : https://sjang1594.github.io/"
         label.textColor = .white
-        label.font = .fira(size: 18, weight: .semibold)
+        label.font = .fira(size: 18, weight: .light)
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
         return label
@@ -145,5 +145,28 @@ final class ProfileView: UIView {
         imageView.layer.borderWidth = 2
         githublogoImageView.layer.cornerRadius = githublogoImageView.frame.size.width / 2
         blogLogoImageView.layer.cornerRadius = blogLogoImageView.frame.size.width / 2
+    }
+    
+    public func githubLabelTapped() {
+        if let url = URL(string: "https://github.com/sjang1594"){
+            openURL(url)
+        }
+    }
+    
+    public func blogLabelTapped() {
+        if let url = URL(string: "https://sjang1594.github.io"){
+            openURL(url)
+        }
+    }
+    
+    func openURL(_ url: URL) {
+        let chromeURL = URL(string: "googlechrome://\(url.absoluteString)")!
+        if UIApplication.shared.canOpenURL(chromeURL) {
+            UIApplication.shared.open(chromeURL, options: [:],
+                                      completionHandler: nil)
+        } else {
+            UIApplication.shared.open(url, options: [:],
+                                      completionHandler: nil)
+        }
     }
 }
