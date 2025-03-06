@@ -9,7 +9,7 @@ final class ImageRepository: ImageLoadingProtocol {
     }
     
     func loadImageAsset(named: String) -> AnyPublisher<UIImage, Error> {
-        if let cachedImage = cache.getImage(for: named, option: .memory, type: .Assets) {
+        if let cachedImage = cache.image(for: named, option: .memory, type: .Assets) {
             return Just(cachedImage)
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
@@ -31,7 +31,7 @@ final class ImageRepository: ImageLoadingProtocol {
         // 확인 필요
         let key = url.absoluteString
         
-        if let cachedImage = cache.getImage(for: key, option: cacheOption, type: .Network) {
+        if let cachedImage = cache.image(for: key, option: cacheOption, type: .Network) {
             return Just(cachedImage)
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
