@@ -26,7 +26,7 @@ private extension SeokHwanViewController {
     }
 
     func configureLayout() {
-        view.backgroundColor = UIColor(named: "SeokHwanBackground")
+        view.backgroundColor = .seokHwanBackground
         view.addSubview(scrollView)
         view.addSubview(stickyHeaderView)
         scrollView.addSubview(contentView)
