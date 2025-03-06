@@ -3,8 +3,9 @@ import SnapKit
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
+    private var viewModel = MainViewModel()
     private var dummyColors: [UIColor] = [.blue, .red, .orange, .yellow, .green, .blue, .red]
-    
+
     lazy var cellWidth = CGFloat(Int(view.frame.width * 0.563))
     private lazy var timer: DispatchSourceTimer = {
         let time = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
@@ -87,14 +88,13 @@ final class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return dummyColors.count
+        return viewModel.cards.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselCardCell.identifier, for: indexPath) as? CarouselCardCell else { return UICollectionViewCell() }
-        cell.backgroundColor = dummyColors[indexPath.row]
-        cell.configure(at: indexPath.row)
+        cell.configure(card: viewModel.cards[indexPath.row])
         return cell
     }
     
@@ -133,6 +133,6 @@ class MainCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-            return true
-        }
+        return true
+    }
 }
