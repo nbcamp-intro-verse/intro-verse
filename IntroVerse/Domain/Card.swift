@@ -2,9 +2,9 @@ import Foundation
 
 struct Card: Identifiable, Equatable {
     enum MemberType: String {
-        case leader = "👑"
-        case memberMan = "👱"
-        case memberWoman = "👩"
+        case leader = "👑 팀장"
+        case memberMan = "👱 팀원"
+        case memberWoman = "👩 팀원"
     }
 
     // MARK: - Properties

@@ -5,13 +5,6 @@ final class CarouselCardCell: UICollectionViewCell {
     static let identifier = "CarouselCardCell"
     
     // MARK: - Properties
-    private let imageView: UIImageView = {
-        let imgView = UIImageView()
-        return imgView
-    }()
-    
-    private let names: [String] = [ "이민재", "박지성", "장승호", "한서영", "유석환", "이민재", "박지성"]
-    
     private var positionStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -101,9 +94,14 @@ final class CarouselCardCell: UICollectionViewCell {
             make.height.equalTo(contentView.frame.height / 3)
         }
     }
-    
-    func configure(at index: Int) {
-        memberTextLabel.text = names[index]
+
+    func configure(card: Card) {
+        // TODO: background를 UIImage(named: "assetName")으로 설정
+        self.backgroundView = UIImageView(image: UIImage(named: card.imageName))
+        positionIconLabel.text = card.memberType.rawValue
+        positionTextLabel.text = ""
+        memberTextLabel.text = card.name
+        memberBirthLabel.text = card.birthday
     }
 }
 
