@@ -11,7 +11,7 @@ final class MainViewController: UIViewController {
     // MARK: - Properties
     private var viewModel = MainViewModel()
     let collectionCache = NSCache<NSString, UIColor>()
-    private var dummyColors: [UIColor] = [.blue, .red, .orange, .yellow, .green, .blue, .red]
+
     
     lazy var cellWidth = CGFloat(Int(view.frame.width * 0.563))
     private var carouselState: CarouselState = .idle {

@@ -20,6 +20,6 @@ struct Card: Identifiable, Equatable {
         self.name = name
         self.memberType = memberType
         self.birthday = "19000101"
-        self.imageName = "image"
+        self.imageName = imageName
     }
 }
