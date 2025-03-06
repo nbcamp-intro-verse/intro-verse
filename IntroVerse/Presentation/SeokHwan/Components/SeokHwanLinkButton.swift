@@ -65,10 +65,10 @@ private extension SeokHwanLinkButton {
         configuration.imagePlacement = .leading
         configuration.imagePadding = 10
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 30)
-        configuration.baseForegroundColor = .black
+        configuration.baseForegroundColor = .seokHwanTitle
 
         self.configuration = configuration
-        backgroundColor = UIColor(named: "SeokHwanLinkButtonBackground")
+        backgroundColor = .seokHwanLinkButtonBackground
         layer.cornerRadius = 10
         addTarget(self, action: #selector(didTapLinkButton(_:)), for: .touchUpInside)
     }

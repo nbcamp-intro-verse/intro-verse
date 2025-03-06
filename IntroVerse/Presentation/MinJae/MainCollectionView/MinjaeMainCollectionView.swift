@@ -82,7 +82,8 @@ enum ContentType {
         case birth
         case mbti
         case description
-        case memoButton
+        case memoTitle
+        case memoContents
     }
     
     struct MinjaeDataModel {
@@ -103,7 +104,7 @@ enum ContentType {
         case .talk:
             return [.title, .description]
         case .memo:
-            return [.title, .memoButton]
+            return [.memoTitle, .memoContents]
         }
     }
     
@@ -118,7 +119,7 @@ enum ContentType {
         case .talk:
             return MinjaeDataModel(title: "한마디", description: "지금까지 스파르타 캠프를 하면서 지식이 많이 부족함을 느끼고 있습니다. 부족한 만큼 적극적인 태도로 캠프에 참여하도록 하겠습니다!")
         case .memo:
-            return MinjaeDataModel(title: "메모")
+            return MinjaeDataModel()
         }
     }
 }

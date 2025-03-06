@@ -5,12 +5,14 @@ final class SeokHwanStickyHeaderView: UIView {
     lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "유석환"
+        label.textColor = .seokHwanTitle
         label.font = UIFont(name: "GmarketSansTTFBold", size: 32)
         return label
     }()
     lazy var tmiLabel: UILabel = {
         let label = UILabel()
         label.text = "'s TMI"
+        label.textColor = .seokHwanTitle
         label.font = UIFont(name: "GmarketSansTTFLight", size: 24)
         label.alpha = 0.0
         return label
@@ -29,7 +31,7 @@ private extension SeokHwanStickyHeaderView {
     }
 
     func configureLayout() {
-        backgroundColor = UIColor(named: "SeokHwanBackground")
+        backgroundColor = .seokHwanBackground
         isHidden = true
         addSubview(nameLabel)
         addSubview(tmiLabel)

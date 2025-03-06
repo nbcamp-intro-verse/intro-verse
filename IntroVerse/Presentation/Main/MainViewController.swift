@@ -3,6 +3,7 @@ import SnapKit
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
+
     private var dummyColors: [UIColor] = [.blue, .red, .orange, .yellow, .green, .blue, .red]
     
     lazy var cellWidth = CGFloat(Int(view.frame.width * 0.563))
@@ -15,7 +16,7 @@ final class MainViewController: UIViewController {
         }
         return time
     }()
-    
+
     private lazy var collectionView: UICollectionView = {
         let layout = MainCollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -32,10 +33,14 @@ final class MainViewController: UIViewController {
     
     // MARK: - Initializers
     init() {
+        self.cache = ImageCache()
+        self.imageRepository = ImageRepository(cache: cache)
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
+        self.cache = ImageCache()
+        self.imageRepository = ImageRepository(cache: cache)
         super.init(coder: coder)
     }
 
