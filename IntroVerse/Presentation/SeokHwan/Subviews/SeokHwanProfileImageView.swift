@@ -12,7 +12,6 @@ private extension SeokHwanProfileImageView {
         contentMode = .scaleAspectFill
         clipsToBounds = true
         layer.cornerRadius = 10
-        tintColor = .systemGray
         image = UIImage(named: "SeokHwanProfile")
     }
 }
