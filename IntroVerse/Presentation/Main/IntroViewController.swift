@@ -125,10 +125,6 @@ class IntroViewController: UIViewController {
     }
 }
 
-#Preview {
-    IntroViewController()
-}
-
 extension UIImage {
     func resize(targetSize: CGSize) -> UIImage? {
         let newRect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height).integral
