@@ -100,7 +100,7 @@ final class CarouselCardCell: UICollectionViewCell {
         positionStackView.snp.makeConstraints { make in
             make.top.leading.equalToSuperview().inset(15)
             make.height.equalTo(30)
-        }	
+        }
         memberStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(20)
