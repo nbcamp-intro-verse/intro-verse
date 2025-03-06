@@ -3,7 +3,7 @@
 ## Introduction
 
 내일배움캠프 iOS 마스터 6기의 4조 팀원들을 소개하는 App입니다.<br>
-@meowbutlerdev @sjang1594 @seoyounghan @minjae-L @youseokhwan
+[@meowbutlerdev](https://github.com/meowbutlerdev) [@sjang1594](https://github.com/sjang1594) [@seoyounghan](https://github.com/seoyounghan) [@minjae-L](https://github.com/minjae-L) [@youseokhwan](https://github.com/youseokhwan)
 
 ## Tech Stack
 
