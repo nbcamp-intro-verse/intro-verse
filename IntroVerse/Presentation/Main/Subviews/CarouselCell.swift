@@ -1,16 +1,78 @@
 import UIKit
 
 final class CarouselCardCell: UICollectionViewCell {
+    
+    static let identifier = "CarouselCardCell"
+    
     // MARK: - Properties
     private let imageView: UIImageView = {
         let imgView = UIImageView()
         return imgView
     }()
+    
+    private let names: [String] = [ "이민재", "박지성", "장승호", "한서영", "유석환", "이민재", "박지성"]
+    private let memberPositionIcons = ["👱", "👑", "👱", "👩", "👱", "👱", "👑"]
+//    enum IconText {
+//        case leader = "👑"
+//        case memberMan = "👱"
+//        case memberWoman = "👩"
+//    }
+    
+    private var positionStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.spacing = 8
+        stackView.layer.cornerRadius = 15
+        stackView.backgroundColor = .white
+        return stackView
+    }()
+    
+    private let positionIconLabel: UILabel = {
+        let label = UILabel()
+        label.text = "👑"
+        return label
+    }()
+    
+    private let positionTextLabel: UILabel = {
+        let label = UILabel()
+        label.text = "리더"
+        return label
+    }()
+    
+    private let memberStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        stackView.distribution = .fill
+        return stackView
+    }()
+    
+    private let memberTextLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 30)
+        label.text = "이민재"
+        label.textColor = .black
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let memberBirthLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15)
+        label.text = "1996.10.16"
+        label.textColor = .black
+        label.textAlignment = .center
+        return label
+    }()
 
     // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.layer.cornerRadius = 15
         setupView()
+        configureLayout()
+        setupStackView()
     }
 
     required init?(coder: NSCoder) {
@@ -19,6 +81,35 @@ final class CarouselCardCell: UICollectionViewCell {
 
     // MARK: - Methods
     private func setupView() {
-
+        contentView.addSubview(positionStackView)
+        contentView.addSubview(memberStackView)
+    }
+    
+    private func setupStackView() {
+        positionStackView.addArrangedSubview(UILabel())
+        positionStackView.addArrangedSubview(positionIconLabel)
+        positionStackView.addArrangedSubview(positionTextLabel)
+        positionStackView.addArrangedSubview(UILabel())
+        memberStackView.addArrangedSubview(UILabel())
+        memberStackView.addArrangedSubview(memberTextLabel)
+        memberStackView.addArrangedSubview(memberBirthLabel)
+        
+    }
+    
+    private func configureLayout() {
+        positionStackView.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview().inset(15)
+            make.height.equalTo(30)
+        }	
+        memberStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().inset(20)
+            make.height.equalTo(contentView.frame.height / 3)
+        }
+    }
+    
+    func configure(at index: Int) {
+        memberTextLabel.text = names[index]
     }
 }
+
