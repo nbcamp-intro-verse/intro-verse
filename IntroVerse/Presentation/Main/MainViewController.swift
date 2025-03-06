@@ -11,7 +11,6 @@ final class MainViewController: UIViewController {
     // MARK: - Properties
     private var viewModel = MainViewModel()
     let collectionCache = NSCache<NSString, UIColor>()
-
     
     lazy var cellWidth = CGFloat(Int(view.frame.width * 0.563))
     private var carouselState: CarouselState = .idle {
@@ -102,6 +101,7 @@ final class MainViewController: UIViewController {
         }
     }
     
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let initialOffset = CGPoint(x: cellWidth + 100, y: collectionView.contentOffset.y)
@@ -128,7 +128,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let widthIncludeSpace = cellWidth + 20
-        let cardCount: Double = Double(dummyColors.count - 2)
+        let cardCount: Double = Double(viewModel.cards.count - 2)
         if scrollView.contentOffset.x < 0 {
             scrollView.contentOffset = CGPoint(x: widthIncludeSpace * cardCount, y: scrollView.contentOffset.y)
         }
@@ -147,6 +147,11 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         carouselState = .autoScrolling
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let viewController = viewModel.cards[indexPath.row].memberViewController.initViewController()
+        self.present(viewController, animated: true)
     }
 }
 
