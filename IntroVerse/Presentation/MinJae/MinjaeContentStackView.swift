@@ -2,6 +2,8 @@ import UIKit
 
 final class MinjaeContentStackView: UIStackView {
     
+    private lazy var views: [UIView] = [titleLabel, nameLabel, birthLabel, mbtiStackView, descriptionLabel, memoTitleStackView, memoStackView]
+    
     private let titleLabel: UILabel = {
         let lb = UILabel()
         lb.text = "타이틀"
@@ -44,25 +46,6 @@ final class MinjaeContentStackView: UIStackView {
         return sv
     }()
     
-    private lazy var memoTitleStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.distribution = .fill
-        let titleLabel = UILabel()
-        titleLabel.text = "메모"
-        let addBtn = UIButton()
-        addBtn.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(addBtn)
-        return stackView
-    }()
-    
-    private let memoAddButton: UIButton = {
-        let btn = UIButton()
-        btn.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-        return btn
-    }()
-    
     private let descriptionLabel: UILabel = {
         let lb = UILabel()
         lb.text = "설명"
@@ -71,11 +54,53 @@ final class MinjaeContentStackView: UIStackView {
         return lb
     }()
     
-    private lazy var views: [UIView] = [titleLabel, nameLabel, birthLabel, mbtiStackView, descriptionLabel, memoTitleStackView]
+    private lazy var memoTitleStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.spacing = 10
+        let titleLabel = UILabel()
+        titleLabel.text = "메모"
+        titleLabel.font = .boldSystemFont(ofSize: 20)
+        let addBtn = UIButton()
+        addBtn.setImage(UIImage(systemName: "square.and.pencil", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold, scale: .large)), for: .normal)
+        addBtn.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(addBtn)
+        return stackView
+    }()
+    
+    private let memoStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        sv.alignment = .leading
+        sv.distribution = .fill
+        sv.spacing = 5
+        return sv
+    }()
+    
+    private func setMemoLabel(text: String) -> UIView {
+        let view = UIView()
+        let label = UILabel()
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(5)
+            make.leading.trailing.equalToSuperview().inset(10)
+        }
+        label.text = text
+        label.numberOfLines = 0
+        view.layer.cornerRadius = 15
+        view.backgroundColor = .white
+        return view
+    }
+    
+    @objc func addButtonTapped() {
+        NotificationCenter.default.post(name: Notification.Name("addAlert"), object: nil)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        spacing = 1
+        spacing = 3
         alignment = .leading
         distribution = .fill
         axis = .vertical
@@ -92,39 +117,32 @@ final class MinjaeContentStackView: UIStackView {
         case .information:
             guard let name = model.content.name, let birth = model.content.birth else { return }
             nameLabel.text = name
+            nameLabel.font = .boldSystemFont(ofSize: 45)
             birthLabel.text = birth
+            birthLabel.font = .systemFont(ofSize: 15)
         case .motto:
             guard let title = model.content.title, let description = model.content.description else { return }
             titleLabel.text = title
             descriptionLabel.text = description
+            descriptionLabel.font = .boldSystemFont(ofSize: 25)
+            descriptionLabel.textAlignment = .center
+            descriptionLabel.textColor = .black
         case .introduce:
             guard let title = model.content.title, let description = model.content.description else { return }
+            titleLabel.font = .systemFont(ofSize: 15)
+            descriptionLabel.font = .boldSystemFont(ofSize: 17)
             titleLabel.text = title
             descriptionLabel.text = description
         case .talk:
             guard let title = model.content.title, let description = model.content.description else { return }
+            titleLabel.font = .systemFont(ofSize: 15)
+            descriptionLabel.font = .boldSystemFont(ofSize: 17)
             titleLabel.text = title
             descriptionLabel.text = description
         case .memo:
-            guard let title = model.content.title, let description = model.content.description else { return }
-            titleLabel.text = title
-            descriptionLabel.text = description
-        }
-        configureLayout(model: model)
-    }
-    
-    private func configureLayout(model: ContentType) {
-        switch model {
-        case .information:
-            nameLabel.font = .boldSystemFont(ofSize: 45)
-            birthLabel.font = .systemFont(ofSize: 15)
-        case .motto:
-            descriptionLabel.font = .boldSystemFont(ofSize: 25)
-            descriptionLabel.textAlignment = .center
-            descriptionLabel.textColor = .black
-        default:
-            titleLabel.font = .systemFont(ofSize: 15)
-            descriptionLabel.font = .boldSystemFont(ofSize: 17)
+            MinJaeViewModel.memos.forEach { memo in
+                memoStackView.addArrangedSubview(setMemoLabel(text: memo))
+            }
         }
     }
     

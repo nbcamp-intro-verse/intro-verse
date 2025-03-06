@@ -30,6 +30,26 @@ final class MinJaeViewController: UIViewController {
         loadImage(url: URL(string: Constant.imageURL)!)
         addViews()
         configureLayout()
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name("addAlert"),
+                                               object: nil,
+                                               queue: nil) { _ in
+            let alertController = UIAlertController(title: "메모 추가", message: nil, preferredStyle: .alert)
+            alertController.addTextField { textField in
+                textField.placeholder = "입력"
+            }
+            let okAction = UIAlertAction(title: "추가",
+                                         style: .default) { [weak self] done in
+                guard let text = alertController.textFields?[0].text else { return }
+                MinJaeViewModel.memos.append(text)
+                self?.mainCollectionView.reloadItems(at: [IndexPath(item: 4, section: 0)])
+            }
+            let cancelAction = UIAlertAction(title: "취소",
+                                             style: .cancel)
+            alertController.addAction(okAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true)
+        }
     }
     
     private func loadImage(url: URL) {
