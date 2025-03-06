@@ -5,19 +5,21 @@ final class SeokHwanHeaderView: UIView {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "유석환"
+        label.textColor = .seokHwanTitle
         label.font = UIFont(name: "GmarketSansTTFBold", size: 32)
         return label
     }()
     private lazy var birthdayLabel: UILabel = {
         let label = UILabel()
         label.text = "1997.01.15"
-        label.textColor = .darkGray
+        label.textColor = .seokHwanSubtitle
         label.font = UIFont(name: "GmarketSansTTFLight", size: 16)
         return label
     }()
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "iOS 마스터 6기 유석환입니다!"
+        label.textColor = .seokHwanTitle
         label.font = UIFont(name: "GmarketSansTTFMedium", size: 18)
         return label
     }()

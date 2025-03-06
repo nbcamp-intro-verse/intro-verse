@@ -12,6 +12,7 @@ final class SeokHwanTMIItem: UIView {
     lazy var textLabel: UILabel = {
         let label = UILabel()
         label.text = "textLabel"
+        label.textColor = .seokHwanTitle
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = UIFont(name: "GmarketSansTTFMedium", size: 16)
