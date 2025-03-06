@@ -3,13 +3,23 @@ import SnapKit
 
 final class JiSungBlurBoxView: UIView {
     private let blurEffectView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffect = UIBlurEffect(style: .regular)
         let view = UIVisualEffectView(effect: blurEffect)
         view.alpha = 0.9
         return view
     }()
 
-    private let maskLayer = CAShapeLayer()
+    private let gradientLayer: CAGradientLayer = {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor.clear.cgColor,
+            UIColor.black.cgColor
+        ]
+        gradientLayer.locations = [0.0, 0.4, 1.0]
+        return gradientLayer
+    }()
+
+    private let shapeLayer = CAShapeLayer()
     private let cornerRadius: CGFloat = 50
 
     override init(frame: CGRect) {
@@ -25,21 +35,23 @@ final class JiSungBlurBoxView: UIView {
     private func setupView() {
         addSubview(blurEffectView)
 
-        blurEffectView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        blurEffectView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        maskLayer.frame = bounds
+        blurEffectView.frame = bounds
+        gradientLayer.frame = bounds
+
         let path = UIBezierPath(
             roundedRect: bounds,
             byRoundingCorners: [.bottomLeft, .bottomRight],
             cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
         )
-        maskLayer.path = path.cgPath
-        blurEffectView.layer.mask = maskLayer
+        shapeLayer.path = path.cgPath
+
+        blurEffectView.layer.mask = gradientLayer
+        layer.mask = shapeLayer
     }
 }

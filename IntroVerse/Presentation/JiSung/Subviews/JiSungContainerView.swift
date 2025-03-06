@@ -71,10 +71,11 @@ final class JiSungContainerView: UIView {
             make.bottom.equalToSuperview().inset(50)
         }
         blurBoxView.snp.makeConstraints { make in
-            make.top.equalTo(profileView.snp.top).offset(-20)
+            make.top.equalTo(profileView.snp.top).offset(-200)
             make.bottom.equalTo(memoView.snp.bottom).offset(20)
             make.width.equalToSuperview()
         }
+
     }
 
     private func setupActions() {
