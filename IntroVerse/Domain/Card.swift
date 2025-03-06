@@ -13,13 +13,15 @@ struct Card: Identifiable, Equatable {
     let memberType: Card.MemberType
     let birthday: String
     let imageName: String
+    let memberViewController: MemberViewController
 
     // MARK: - Initializers
-    init(name: String, memberType: Card.MemberType, birthday: String, imageName: String) {
+    init(name: String, memberType: Card.MemberType, birthday: String, imageName: String, memberViewController: MemberViewController) {
         self.id = UUID()
         self.name = name
         self.memberType = memberType
         self.birthday = "19000101"
         self.imageName = imageName
+        self.memberViewController = memberViewController
     }
 }
