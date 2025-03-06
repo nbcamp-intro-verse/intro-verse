@@ -15,7 +15,7 @@ final class MainViewController: UIViewController {
         }
         return time
     }()
-    
+
     private lazy var collectionView: UICollectionView = {
         let layout = MainCollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
