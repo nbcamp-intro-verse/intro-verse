@@ -11,7 +11,7 @@ final class ImageCache: ImageCachingProtocol {
         try? fileManager.createDirectory(at: diskCacheDirectory, withIntermediateDirectories: true)
     }
     
-    func getImage(for key: String, option: CacheOption, type: ImageServiceType) -> UIImage? {
+    func image(for key: String, option: CacheOption, type: ImageServiceType) -> UIImage? {
         switch option {
         case .none:
             return nil
