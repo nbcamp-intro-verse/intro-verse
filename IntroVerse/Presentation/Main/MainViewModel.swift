@@ -1,22 +1,12 @@
 import Foundation
 
 final class MainViewModel {
-    // MARK: - Properties
-    private(set) var cards: [Card]
-    @Published var activeCard: Card?
-
-    // MARK: - Initializers
-    init(cards: [Card]) {
-        self.cards = cards
-        self.activeCard = cards.first
-    }
-
-    // MARK: - Methods
-    func setActiveCard(_ card: Card) {
-        activeCard = card
-    }
-
-    func loadCards() {
-
-    }
+    let cards: [Card] = [
+        Card(name: "이민재", memberType: .memberMan, birthday: "19000101", imageName: "assetName"),
+        Card(name: "박지성", memberType: .leader, birthday: "19000101", imageName: "assetName"),
+        Card(name: "장승호", memberType: .memberMan, birthday: "19000101", imageName: "assetName"),
+        Card(name: "한서영", memberType: .memberWoman, birthday: "19000101", imageName: "assetName"),
+        Card(name: "유석환", memberType: .memberMan, birthday: "19000101", imageName: "assetName"),
+    ]
+    let selectedCardIndex = 0
 }

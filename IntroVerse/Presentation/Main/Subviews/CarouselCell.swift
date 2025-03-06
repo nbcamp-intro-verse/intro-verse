@@ -11,12 +11,6 @@ final class CarouselCardCell: UICollectionViewCell {
     }()
     
     private let names: [String] = [ "이민재", "박지성", "장승호", "한서영", "유석환", "이민재", "박지성"]
-    private let memberPositionIcons = ["👱", "👑", "👱", "👩", "👱", "👱", "👑"]
-//    enum IconText {
-//        case leader = "👑"
-//        case memberMan = "👱"
-//        case memberWoman = "👩"
-//    }
     
     private var positionStackView: UIStackView = {
         let stackView = UIStackView()
