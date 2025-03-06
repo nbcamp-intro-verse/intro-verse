@@ -35,12 +35,10 @@ final class MinjaeMainCollectionHeaderView: UICollectionReusableView {
     }
     
     @objc func githubButtonTapped() {
-        print("github")
         delegate?.linkButtonTapped(url: URL(string: "https://github.com/minjae-L")!)
     }
     
     @objc func notionButtonTapped() {
-        print("notion")
         delegate?.linkButtonTapped(url: URL(string: "https://global-profit-946.notion.site/iOS-17feb1b45ca080cb9bb1ce6def7306b3")!)
     }
     
