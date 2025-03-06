@@ -5,6 +5,14 @@ final class CarouselCardCell: UICollectionViewCell {
     static let identifier = "CarouselCardCell"
     
     // MARK: - Properties
+    private var backgroundImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "jisung_profile"))
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 15
+        return imageView
+    }()
+
     private var positionStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -68,6 +76,7 @@ final class CarouselCardCell: UICollectionViewCell {
 
     // MARK: - Methods
     private func setupView() {
+        contentView.addSubview(backgroundImageView)
         contentView.addSubview(positionStackView)
         contentView.addSubview(memberStackView)
     }
@@ -84,6 +93,10 @@ final class CarouselCardCell: UICollectionViewCell {
     }
     
     private func configureLayout() {
+        backgroundImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         positionStackView.snp.makeConstraints { make in
             make.top.leading.equalToSuperview().inset(15)
             make.height.equalTo(30)
@@ -96,8 +109,7 @@ final class CarouselCardCell: UICollectionViewCell {
     }
 
     func configure(card: Card) {
-        // TODO: background를 UIImage(named: "assetName")으로 설정
-        self.backgroundView = UIImageView(image: UIImage(named: card.imageName))
+        backgroundImageView.image = UIImage(named: card.imageName)
         positionIconLabel.text = card.memberType.rawValue
         positionTextLabel.text = ""
         memberTextLabel.text = card.name
