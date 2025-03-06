@@ -25,13 +25,14 @@ final class MainViewController: UIViewController {
         layout.minimumLineSpacing = 20
         let collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .lightGray
+        collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(CarouselCardCell.self, forCellWithReuseIdentifier: "CarouselCardCell")
         return collectionView
     }()
     
+    private let introView = IntroView()
     
     // MARK: - Initializers
     init() {
@@ -68,6 +69,7 @@ final class MainViewController: UIViewController {
     }
     private func addViews() {
         view.addSubview(collectionView)
+        view.addSubview(introView)
     }
     
     private func configureLayout() {
@@ -76,6 +78,10 @@ final class MainViewController: UIViewController {
             make.top.equalTo(view.layoutMarginsGuide)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(height)
+        }
+        introView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(collectionView.snp.bottom)
         }
     }
     
