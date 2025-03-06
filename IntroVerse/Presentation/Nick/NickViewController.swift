@@ -4,7 +4,12 @@ import MetalKit
 
 final class NickViewController: UIViewController, MTKViewDelegate {
     // MARK: - View Property
-    private lazy var profileView = ProfileView()
+    private lazy var profileView: ProfileView = {
+        let profileView = ProfileView()
+        profileView.translatesAutoresizingMaskIntoConstraints = false
+        profileView.isUserInteractionEnabled = true
+        return profileView
+    }()
     
     private lazy var label: UILabel = {
         let label = UILabel()
@@ -26,7 +31,6 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         stackView.spacing = 2
         stackView.distribution = .fillEqually
         stackView.alignment = .top
-        stackView.isUserInteractionEnabled = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -55,7 +59,7 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         super.viewDidLoad()
         setupGradientLayer()
         setupMTKView()
-        setupStackViewGesture()
+        setupViewGesture()
         setupFlappableViews()
         setViewConstraints()
     }
@@ -104,7 +108,7 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         
         profileView.snp.makeConstraints { make in
             make.top.equalTo(mtkView.snp.bottom)
-            make.leading.equalToSuperview().inset(10)
+            make.width.equalToSuperview()
             make.height.equalTo(200)
         }
         
@@ -120,11 +124,16 @@ final class NickViewController: UIViewController, MTKViewDelegate {
         }
     }
     
-    private func setupStackViewGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStackViewTap(_ :)))
-        tapGesture.cancelsTouchesInView = false
-        tapGesture.delaysTouchesBegan = false
-        stackView.addGestureRecognizer(tapGesture)
+    private func setupViewGesture() {
+        let stackViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStackViewTap(_ :)))
+        stackView.addGestureRecognizer(stackViewTapGesture)
+        
+        let githubTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleProfileViewTap))
+        profileView.githubLabel.addGestureRecognizer(githubTapGesture)
+        
+        let blogTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleProfileViewTap))
+        profileView.blogLabel.addGestureRecognizer(blogTapGesture)
+
     }
     
     @objc private func handleStackViewTap(_ gesture: UITapGestureRecognizer) {
@@ -136,6 +145,16 @@ final class NickViewController: UIViewController, MTKViewDelegate {
                 }
                 break;
             }
+        }
+    }
+    
+    @objc private func handleProfileViewTap(_ gesture: UITapGestureRecognizer) {
+        if gesture.view == profileView.githubLabel {
+            profileView.githubLabelTapped()
+        }
+        
+        if gesture.view == profileView.blogLabel {
+            profileView.blogLabelTapped()
         }
     }
     
