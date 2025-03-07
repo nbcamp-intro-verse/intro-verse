@@ -1,4 +1,5 @@
 # IntroVerse
+![IntroVerseAppIcon](https://github.com/user-attachments/assets/9239b867-3a9c-4c9b-8ab6-b094e3f06069)
 
 ## Introduction
 
