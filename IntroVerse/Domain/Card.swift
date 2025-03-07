@@ -20,7 +20,7 @@ struct Card: Identifiable, Equatable {
         self.id = UUID()
         self.name = name
         self.memberType = memberType
-        self.birthday = "19000101"
+        self.birthday = birthday
         self.imageName = imageName
         self.memberViewController = memberViewController
     }
