@@ -1,18 +1,28 @@
 import UIKit
 import SnapKit
 
-enum CarouselState {
-    case idle
-    case scrolling
-    case autoScrolling
-}
+
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
     private var viewModel = MainViewModel()
     let collectionCache = NSCache<NSString, UIColor>()
     
-    lazy var cellWidth = CGFloat(Int(view.frame.width * 0.563))
+    enum CarouselState {
+        case idle
+        case scrolling
+        case autoScrolling
+    }
+    
+    enum Constant {
+        static let cellWidthRatio: CGFloat = 0.563
+        static let cellHeightRatio: CGFloat = 0.45
+        static let collectionViewCellSpace: CGFloat = 20
+        static let autoScrollRepeatTime: DispatchTimeInterval = .milliseconds(10)
+        static let autoScrollOffsetX: CGFloat = 0.5
+        static let initCollectionViewOffsetX: CGFloat = 100
+    }
+    lazy var cellWidth = CGFloat(Int(view.frame.width * Constant.cellWidthRatio))
     private var carouselState: CarouselState = .idle {
         didSet{
             switch carouselState {
@@ -29,7 +39,7 @@ final class MainViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = MainCollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 20
+        layout.minimumLineSpacing = Constant.collectionViewCellSpace
         let collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
         collectionView.prefetchDataSource = self
         collectionView.showsHorizontalScrollIndicator = false
@@ -63,7 +73,7 @@ final class MainViewController: UIViewController {
     private func startAutoScrollTimer() {
         stopAutoScrollTimer()
         let timer = DispatchSource.makeTimerSource(queue: .main)
-        timer.schedule(deadline: .now(), repeating: .milliseconds(10))
+        timer.schedule(deadline: .now(), repeating: Constant.autoScrollRepeatTime)
         timer.setEventHandler { [weak self] in
             self?.autoScroll()
         }
@@ -79,7 +89,7 @@ final class MainViewController: UIViewController {
     // MARK: - Methods
     private func autoScroll() {
         guard carouselState == .autoScrolling else { return }
-        let offsetX = collectionView.contentOffset.x + 0.5
+        let offsetX = collectionView.contentOffset.x + Constant.autoScrollOffsetX
         collectionView.setContentOffset(CGPoint(x: offsetX, y: collectionView.contentOffset.y), animated: false)
     }
     
@@ -89,7 +99,7 @@ final class MainViewController: UIViewController {
     }
     
     private func configureLayout() {
-        let height = Int(view.frame.height * 0.45)
+        let height = Int(view.frame.height * Constant.cellHeightRatio)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.layoutMarginsGuide)
             make.leading.trailing.equalToSuperview()
@@ -104,7 +114,7 @@ final class MainViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let initialOffset = CGPoint(x: cellWidth + 100, y: collectionView.contentOffset.y)
+        let initialOffset = CGPoint(x: cellWidth + Constant.initCollectionViewOffsetX, y: collectionView.contentOffset.y)
         collectionView.setContentOffset(initialOffset, animated: false)
     }
     
@@ -127,12 +137,12 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let widthIncludeSpace = cellWidth + 20
-        let cardCount: Double = Double(viewModel.cards.count - 2)
+        let cellWidthIncludeSpace = cellWidth + 20
+        let infiniteCarouselCount = viewModel.infiniteCarouselCount
         if scrollView.contentOffset.x < 0 {
-            scrollView.contentOffset = CGPoint(x: widthIncludeSpace * cardCount, y: scrollView.contentOffset.y)
+            scrollView.contentOffset = CGPoint(x: cellWidthIncludeSpace * infiniteCarouselCount, y: scrollView.contentOffset.y)
         }
-        if scrollView.contentOffset.x > widthIncludeSpace * cardCount {
+        if scrollView.contentOffset.x > cellWidthIncludeSpace * infiniteCarouselCount {
             scrollView.contentOffset = CGPoint(x: 0, y: scrollView.contentOffset.y)
         }
     }
