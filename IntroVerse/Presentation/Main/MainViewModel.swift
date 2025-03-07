@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 enum MemberViewController {
@@ -34,5 +33,8 @@ final class MainViewModel {
         Card(name: "이민재", memberType: .memberMan, birthday: "19000101", imageName: "minjaeProfile", memberViewController: .minjae),
         Card(name: "박지성", memberType: .leader, birthday: "19000101", imageName: "jisung_profile", memberViewController: .jisung),
     ]
-    let selectedCardIndex = 0
+    
+    var infiniteCarouselCount: Double {
+        return Double(cards.count - 2)
+    }
 }
