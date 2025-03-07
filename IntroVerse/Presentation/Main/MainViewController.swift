@@ -1,48 +1,63 @@
 import UIKit
 import SnapKit
 
+
+
 final class MainViewController: UIViewController {
     // MARK: - Properties
-    let cache: ImageCache
-    let imageRepository: ImageRepository
-
-    private var dummyColors: [UIColor] = [.blue, .red, .orange, .yellow, .green, .blue, .red]
+    private var viewModel = MainViewModel()
+    let collectionCache = NSCache<NSString, UIColor>()
     
-    lazy var cellWidth = CGFloat(Int(view.frame.width * 0.563))
-    private lazy var timer: DispatchSourceTimer = {
-        let time = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
-        time.schedule(deadline: .now(), repeating: .milliseconds(10))
-        
-        time.setEventHandler { [weak self] in
-            self?.autoScroll()
+    enum CarouselState {
+        case idle
+        case scrolling
+        case autoScrolling
+    }
+    
+    enum Constant {
+        static let cellWidthRatio: CGFloat = 0.563
+        static let cellHeightRatio: CGFloat = 0.45
+        static let collectionViewCellSpace: CGFloat = 20
+        static let autoScrollRepeatTime: DispatchTimeInterval = .milliseconds(10)
+        static let autoScrollOffsetX: CGFloat = 0.5
+        static let initCollectionViewOffsetX: CGFloat = 100
+    }
+    lazy var cellWidth = CGFloat(Int(view.frame.width * Constant.cellWidthRatio))
+    private var carouselState: CarouselState = .idle {
+        didSet{
+            switch carouselState {
+            case .autoScrolling:
+                startAutoScrollTimer()
+            case .idle, .scrolling:
+                stopAutoScrollTimer()
+            }
         }
-        return time
-    }()
+    }
+    
+    private var autoScrollTimer: DispatchSourceTimer?
 
     private lazy var collectionView: UICollectionView = {
         let layout = MainCollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 20
+        layout.minimumLineSpacing = Constant.collectionViewCellSpace
         let collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
+        collectionView.prefetchDataSource = self
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .lightGray
+        collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(CarouselCardCell.self, forCellWithReuseIdentifier: "CarouselCardCell")
         return collectionView
     }()
     
+    private let introView = IntroView()
     
     // MARK: - Initializers
     init() {
-        self.cache = ImageCache()
-        self.imageRepository = ImageRepository(cache: cache)
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
-        self.cache = ImageCache()
-        self.imageRepository = ImageRepository(cache: cache)
         super.init(coder: coder)
     }
 
@@ -52,60 +67,82 @@ final class MainViewController: UIViewController {
         view.backgroundColor = .white
         addViews()
         configureLayout()
-        timer.activate()
-        
+        carouselState = .autoScrolling
+    }
+    
+    private func startAutoScrollTimer() {
+        stopAutoScrollTimer()
+        let timer = DispatchSource.makeTimerSource(queue: .main)
+        timer.schedule(deadline: .now(), repeating: Constant.autoScrollRepeatTime)
+        timer.setEventHandler { [weak self] in
+            self?.autoScroll()
+        }
+        timer.resume()
+        autoScrollTimer = timer
     }
 
+    private func stopAutoScrollTimer() {
+        autoScrollTimer?.cancel()
+        autoScrollTimer = nil
+    }
+    
     // MARK: - Methods
-    
     private func autoScroll() {
-        increaseContentsOffsetX()
+        guard carouselState == .autoScrolling else { return }
+        let offsetX = collectionView.contentOffset.x + Constant.autoScrollOffsetX
+        collectionView.setContentOffset(CGPoint(x: offsetX, y: collectionView.contentOffset.y), animated: false)
     }
     
-    func increaseContentsOffsetX() {
-        let offsetX = collectionView.contentOffset.x + 0.5
-        self.collectionView.contentOffset = CGPoint(x: offsetX, y: self.collectionView.contentOffset.y)
-    }
     private func addViews() {
         view.addSubview(collectionView)
+        view.addSubview(introView)
     }
     
     private func configureLayout() {
-        let height = Int(view.frame.height * 0.45)
+        let height = Int(view.frame.height * Constant.cellHeightRatio)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.layoutMarginsGuide)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(height)
         }
+        introView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(collectionView.snp.bottom)
+        }
     }
+    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        collectionView.setContentOffset(.init(x: cellWidth + 100, y: collectionView.contentOffset.y), animated: false)
+        let initialOffset = CGPoint(x: cellWidth + Constant.initCollectionViewOffsetX, y: collectionView.contentOffset.y)
+        collectionView.setContentOffset(initialOffset, animated: false)
+    }
+    
+    deinit {
+        stopAutoScrollTimer()
     }
 }
 
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return dummyColors.count
+        return viewModel.cards.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselCardCell.identifier, for: indexPath) as? CarouselCardCell else { return UICollectionViewCell() }
-        cell.backgroundColor = dummyColors[indexPath.row]
-        cell.configure(at: indexPath.row)
+        cell.configure(card: viewModel.cards[indexPath.row])
         return cell
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let widthIncludeSpace = cellWidth + 20
-        let cardCount: Double = Double(dummyColors.count - 2)
+        let cellWidthIncludeSpace = cellWidth + 20
+        let infiniteCarouselCount = viewModel.infiniteCarouselCount
         if scrollView.contentOffset.x < 0 {
-            scrollView.contentOffset = CGPoint(x: widthIncludeSpace * cardCount, y: scrollView.contentOffset.y)
+            scrollView.contentOffset = CGPoint(x: cellWidthIncludeSpace * infiniteCarouselCount, y: scrollView.contentOffset.y)
         }
-        if scrollView.contentOffset.x > widthIncludeSpace * cardCount {
+        if scrollView.contentOffset.x > cellWidthIncludeSpace * infiniteCarouselCount {
             scrollView.contentOffset = CGPoint(x: 0, y: scrollView.contentOffset.y)
         }
     }
@@ -114,6 +151,28 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         return CGSize(width: cellWidth, height: collectionView.frame.height - 10)
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        carouselState = .scrolling
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        carouselState = .autoScrolling
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let viewController = viewModel.cards[indexPath.row].memberViewController.initViewController()
+        self.present(viewController, animated: true)
+    }
+}
+
+extension MainViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        // cache
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        // delete cache
+    }
 }
 
 class MainCollectionViewFlowLayout: UICollectionViewFlowLayout {
@@ -121,19 +180,21 @@ class MainCollectionViewFlowLayout: UICollectionViewFlowLayout {
         guard let collectionView = collectionView else { return nil }
         guard let attributes = super.layoutAttributesForElements(in: rect) else { return nil }
         
-        let centerX = collectionView.contentOffset.x + collectionView.bounds.width/2
+        let centerX = collectionView.contentOffset.x + collectionView.bounds.width * 0.5
         
         attributes.forEach { attribute in
             let distance = attribute.center.x - centerX
             let angle = distance / (UIScreen.main.bounds.height * 4)
-            let minDistance = min(0.1, abs(distance / (collectionView.bounds.width * 2)))
-            let scale = max((1 - minDistance), 0.9)
-            attribute.transform = CGAffineTransform(translationX: 0, y: 0).rotated(by: angle).scaledBy(x: scale, y: scale)
+            let scale = max((1 - abs(distance / collectionView.bounds.width * 0.5)), 0.8)
+            attribute.transform = CGAffineTransform(translationX: 0, y: 0)
+                .rotated(by: angle)
+                .scaledBy(x: scale, y: scale)
+            attribute.zIndex = Int(1000 - abs(centerX))
         }
         return attributes
     }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
             return true
-        }
+    }
 }

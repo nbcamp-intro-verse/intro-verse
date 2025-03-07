@@ -1,8 +1,7 @@
 import UIKit
 import SnapKit
 
-class IntroViewController: UIViewController {
-
+final class IntroView: UIView {
     private let topLabel: UILabel = {
         let label = UILabel()
         label.text = "iOS 마스터 6기 4조"
@@ -26,10 +25,10 @@ class IntroViewController: UIViewController {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.text = """
-        안녕하세요. 우리팀 설명 텍스트입니다.
-        안녕하세요. 우리팀 설명 텍스트입니다.
-        안녕하세요. 우리팀 설명 텍스트입니다.
-        안녕하세요. 우리팀 설명 텍스트입니다.
+        안녕하세요, iOS 마스터 6기 4조입니다.
+        내일배움캠프에서 선보이는 첫 앱
+        IntroVerse에 오신 것을 환영합니다!
+        저희 팀의 이야기를 담은 이 앱을 통해 창의적인 개발 여정을 함께 하시길 바랍니다.
         """
         label.font = .preferredFont(forTextStyle: .body)
 
@@ -68,25 +67,30 @@ class IntroViewController: UIViewController {
     }()
 
     // MARK: - View Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = .white
 
-        view.addSubview(topLabel)
-        view.addSubview(titleLabel)
-        view.addSubview(descriptionLabel)
-        view.addSubview(githubButton)
-        view.addSubview(notionButton)
-
+        self.addSubview(topLabel)
+        self.addSubview(titleLabel)
+        self.addSubview(descriptionLabel)
+        self.addSubview(githubButton)
+        self.addSubview(notionButton)
+        
         githubButton.addTarget(self, action: #selector(githubButtonTapped), for: .touchUpInside)
         notionButton.addTarget(self, action: #selector(notionButtonTapped), for: .touchUpInside)
 
         setupConstraints()
     }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 
     private func setupConstraints() {
         topLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.top.equalToSuperview().offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
 
@@ -102,14 +106,14 @@ class IntroViewController: UIViewController {
 
         githubButton.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(40)
-            make.trailing.equalTo(view.snp.centerX).offset(-20)
+            make.trailing.equalTo(self.snp.centerX).offset(-20)
             make.width.equalTo(100)
             make.height.equalTo(32)
         }
 
         notionButton.snp.makeConstraints { make in
             make.centerY.equalTo(githubButton)
-            make.leading.equalTo(view.snp.centerX).offset(20)
+            make.leading.equalTo(self.snp.centerX).offset(20)
             make.width.equalTo(100)
             make.height.equalTo(32)
         }
@@ -122,18 +126,5 @@ class IntroViewController: UIViewController {
 
     @objc private func notionButtonTapped() {
         SeoYoungLinkPage.mainNotion.open()
-    }
-}
-
-extension UIImage {
-    func resize(targetSize: CGSize) -> UIImage? {
-        let newRect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height).integral
-        UIGraphicsBeginImageContextWithOptions(newRect.size, true, 0)
-        guard let context = UIGraphicsGetCurrentContext() else { return nil }
-        context.interpolationQuality = .high
-        draw(in: newRect)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage
     }
 }

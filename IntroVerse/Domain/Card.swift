@@ -1,21 +1,27 @@
 import Foundation
 
 struct Card: Identifiable, Equatable {
+    enum MemberType: String {
+        case leader = "👑 팀장"
+        case memberMan = "👱 팀원"
+        case memberWoman = "👩 팀원"
+    }
+
     // MARK: - Properties
     let id: UUID
-    let image: String
+    let name: String
+    let memberType: Card.MemberType
+    let birthday: String
+    let imageName: String
+    let memberViewController: MemberViewController
 
     // MARK: - Initializers
-    init(image: String) {
+    init(name: String, memberType: Card.MemberType, birthday: String, imageName: String, memberViewController: MemberViewController) {
         self.id = UUID()
-        self.image = image
+        self.name = name
+        self.memberType = memberType
+        self.birthday = birthday
+        self.imageName = imageName
+        self.memberViewController = memberViewController
     }
 }
-
-let cards: [Card] = [
-    .init(image: ""),
-    .init(image: ""),
-    .init(image: ""),
-    .init(image: ""),
-    .init(image: ""),
-]

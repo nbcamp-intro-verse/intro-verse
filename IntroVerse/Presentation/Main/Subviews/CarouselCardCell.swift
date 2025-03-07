@@ -5,26 +5,21 @@ final class CarouselCardCell: UICollectionViewCell {
     static let identifier = "CarouselCardCell"
     
     // MARK: - Properties
-    private let imageView: UIImageView = {
-        let imgView = UIImageView()
-        return imgView
+    private var backgroundImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "jisung_profile"))
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 15
+        return imageView
     }()
-    
-    private let names: [String] = [ "이민재", "박지성", "장승호", "한서영", "유석환", "이민재", "박지성"]
-    private let memberPositionIcons = ["👱", "👑", "👱", "👩", "👱", "👱", "👑"]
-//    enum IconText {
-//        case leader = "👑"
-//        case memberMan = "👱"
-//        case memberWoman = "👩"
-//    }
-    
+
     private var positionStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fill
         stackView.spacing = 8
         stackView.layer.cornerRadius = 15
-        stackView.backgroundColor = .white
+        stackView.backgroundColor = .lightGray.withAlphaComponent(0.4)
         return stackView
     }()
     
@@ -37,6 +32,7 @@ final class CarouselCardCell: UICollectionViewCell {
     private let positionTextLabel: UILabel = {
         let label = UILabel()
         label.text = "리더"
+        label.textColor = .white
         return label
     }()
     
@@ -52,7 +48,7 @@ final class CarouselCardCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 30)
         label.text = "이민재"
-        label.textColor = .black
+        label.textColor = .white
         label.textAlignment = .center
         return label
     }()
@@ -61,7 +57,7 @@ final class CarouselCardCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
         label.text = "1996.10.16"
-        label.textColor = .black
+        label.textColor = .white
         label.textAlignment = .center
         return label
     }()
@@ -81,6 +77,7 @@ final class CarouselCardCell: UICollectionViewCell {
 
     // MARK: - Methods
     private func setupView() {
+        contentView.addSubview(backgroundImageView)
         contentView.addSubview(positionStackView)
         contentView.addSubview(memberStackView)
     }
@@ -97,19 +94,27 @@ final class CarouselCardCell: UICollectionViewCell {
     }
     
     private func configureLayout() {
+        backgroundImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         positionStackView.snp.makeConstraints { make in
             make.top.leading.equalToSuperview().inset(15)
             make.height.equalTo(30)
-        }	
+        }
         memberStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(20)
-            make.height.equalTo(contentView.frame.height / 3)
+            make.height.equalTo(contentView.frame.height / 4)
         }
     }
-    
-    func configure(at index: Int) {
-        memberTextLabel.text = names[index]
+
+    func configure(card: Card) {
+        backgroundImageView.image = UIImage(named: card.imageName)
+        positionIconLabel.text = card.memberType.rawValue
+        positionTextLabel.text = ""
+        memberTextLabel.text = card.name
+        memberBirthLabel.text = card.birthday
     }
 }
 
