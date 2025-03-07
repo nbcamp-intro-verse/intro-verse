@@ -70,7 +70,7 @@ final class IntroView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
 
         self.addSubview(topLabel)
         self.addSubview(titleLabel)

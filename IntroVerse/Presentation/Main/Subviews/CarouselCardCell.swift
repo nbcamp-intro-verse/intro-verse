@@ -61,6 +61,12 @@ final class CarouselCardCell: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
+    
+    private let blankLabel: UILabel = {
+        let label = UILabel()
+        label.text = " "
+        return label
+    }()
 
     // MARK: - Initializers
     override init(frame: CGRect) {
