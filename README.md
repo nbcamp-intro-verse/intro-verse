@@ -54,7 +54,7 @@ open IntroVerse.xcodeproj
 | MinJaeView    | ![MinJaeView](https://github.com/user-attachments/assets/69db0348-bb83-4582-8a3a-96daeb57347a)                                             | - 메인 화면에서 선택한 카드의 이미지를 전체 배경화면으로 사용 <br> - 깃허브와 노션 버튼 클릭 시 Safari로 열람 <br> - 아래로 스크롤 시 상단 헤더 뷰 고정                                                            |
 | NickView      | ![NickView](https://github.com/user-attachments/assets/b43e1e94-13cd-4786-af24-9c652939e9f4)                                               | - 화면의 약 4분의 1에 Rendering 기능 추가 <br> - [Ray Marching Animation w/ Metal Kit](https://www.notion.so/Ray-Marching-in-Mobile-Device-1acf2a8721a1803dabfde671a4164f44?pvs=21) <br> - 하단 Frame은 IntroView Page로 분리 <br> - Label (How to make pixel prettier?) <br> - 마지막 Frame에 2개의 flip card |
 | SeoYoungView  | ![SeoYoungView](https://github.com/user-attachments/assets/cd7e52bf-31ce-4bf4-a327-226480a35352)                                             | - 아이콘 클릭 시 브라우저로 이동 <br> - UserDefaults를 이용한 간단한 메모 작성 및 수정 기능                                                                                                                   |
-| SeokHwanView  | ![SeokHwanView](https://github.com/user-attachments/assets/7d9c2858-e7c5-41fa-8b4b-f05ec3bbad4b)                                             | - 상단에 프로필 이미지 표시 <br> - Blog, GitHub 버튼 클릭 시 해당 사이트로 이동 <br> - 하단에 MBTI, 관심사, 취미 등 키워드 나열 <br> - ScrollView 사용 <br> - MainView에서 present될 때 프로필 이미지에 Hero Animation 적용 |
+| SeokHwanView  | ![SeokHwanView](https://github.com/user-attachments/assets/7d9c2858-e7c5-41fa-8b4b-f05ec3bbad4b)                                             | - 상단에 프로필 이미지 표시 <br> - Blog, GitHub 버튼 클릭 시 해당 사이트로 이동 <br> - 하단에 MBTI, 관심사, 취미 등 키워드 나열 <br> - ScrollView 사용 <br> - Sticky한 Header 구현 |
 
 
 
