@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "githubIcon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

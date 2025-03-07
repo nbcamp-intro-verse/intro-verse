@@ -1,100 +1,57 @@
 import UIKit
 import SnapKit
 
+
+
 final class MainViewController: UIViewController {
     // MARK: - Properties
-    private var cards: [Card] = []
-    private var activateCard: Card?
-
-    /**
-     Dummy UI Components
-     */
-    lazy var jiSungButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("JiSung", for: .normal)
-        button.addTarget(self, action: #selector(jiSungAction), for: .touchUpInside)
-        return button
-    }()
-    lazy var minJaeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("MinJae", for: .normal)
-        button.addTarget(self, action: #selector(minJaeAction), for: .touchUpInside)
-        return button
-    }()
-    lazy var nickButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Nick", for: .normal)
-        button.addTarget(self, action: #selector(nickAction), for: .touchUpInside)
-        return button
-    }()
-    lazy var seokHwanButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("SeokHwan", for: .normal)
-        button.addTarget(self, action: #selector(seokHwanAction), for: .touchUpInside)
-        return button
-    }()
-    lazy var seoYoungButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("SeoYoung", for: .normal)
-        button.addTarget(self, action: #selector(seoYoungAction), for: .touchUpInside)
-        return button
-    }()
-
-    /**
-     Dummy Button Actions
-     */
-    @objc func jiSungAction() {
-        let viewController = JiSungViewController()
-        viewController.modalPresentationStyle = .automatic
-        present(viewController, animated: true)
+    private var viewModel = MainViewModel()
+    let collectionCache = NSCache<NSString, UIColor>()
+    
+    enum CarouselState {
+        case idle
+        case scrolling
+        case autoScrolling
     }
-    @objc func minJaeAction() {
-        let viewController = MinJaeViewController()
-        viewController.modalPresentationStyle = .automatic
-        present(viewController, animated: true)
+    
+    enum Constant {
+        static let cellWidthRatio: CGFloat = 0.563
+        static let cellHeightRatio: CGFloat = 0.45
+        static let collectionViewCellSpace: CGFloat = 20
+        static let autoScrollRepeatTime: DispatchTimeInterval = .milliseconds(10)
+        static let autoScrollOffsetX: CGFloat = 0.5
+        static let initCollectionViewOffsetX: CGFloat = 100
     }
-    @objc func nickAction() {
-        let viewController = NickViewController()
-        viewController.modalPresentationStyle = .automatic
-        present(viewController, animated: true)
+    lazy var cellWidth = CGFloat(Int(view.frame.width * Constant.cellWidthRatio))
+    private var carouselState: CarouselState = .idle {
+        didSet{
+            switch carouselState {
+            case .autoScrolling:
+                startAutoScrollTimer()
+            case .idle, .scrolling:
+                stopAutoScrollTimer()
+            }
+        }
     }
-    @objc func seokHwanAction() {
-        let viewController = SeokHwanViewController()
-        viewController.modalPresentationStyle = .automatic
-        present(viewController, animated: true)
-    }
-    @objc func seoYoungAction() {
-        let viewController = SeoYoungViewController()
-        viewController.modalPresentationStyle = .automatic
-        present(viewController, animated: true)
-    }
+    
+    private var autoScrollTimer: DispatchSourceTimer?
 
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = MainCollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = Constant.collectionViewCellSpace
         let collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
+        collectionView.prefetchDataSource = self
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(CarouselCardCell.self, forCellWithReuseIdentifier: "CarouselCardCell")
         return collectionView
     }()
-
-    private lazy var backgroundImageView: UIImageView = {
-        let imgView = UIImageView()
-        imgView.contentMode = .scaleAspectFit
-        imgView.clipsToBounds = true
-        return imgView
-    }()
-
-    private lazy var blurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .dark)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        return blurView
-    }()
-
+    
+    private let introView = IntroView()
+    
     // MARK: - Initializers
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -107,94 +64,137 @@ final class MainViewController: UIViewController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupView()
-        dummySetupView()
+        view.backgroundColor = .white
+        addViews()
+        configureLayout()
+        carouselState = .autoScrolling
+    }
+    
+    private func startAutoScrollTimer() {
+        stopAutoScrollTimer()
+        let timer = DispatchSource.makeTimerSource(queue: .main)
+        timer.schedule(deadline: .now(), repeating: Constant.autoScrollRepeatTime)
+        timer.setEventHandler { [weak self] in
+            self?.autoScroll()
+        }
+        timer.resume()
+        autoScrollTimer = timer
     }
 
+    private func stopAutoScrollTimer() {
+        autoScrollTimer?.cancel()
+        autoScrollTimer = nil
+    }
+    
     // MARK: - Methods
-    /**
-     Dummy Methods
-     */
-    private func dummySetupView() {
-        view.backgroundColor = .systemBackground
-        view.addSubview(jiSungButton)
-        view.addSubview(minJaeButton)
-        view.addSubview(nickButton)
-        view.addSubview(seokHwanButton)
-        view.addSubview(seoYoungButton)
-        jiSungButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(200)
-            make.height.equalTo(50)
-        }
-        minJaeButton.snp.makeConstraints { make in
-            make.top.equalTo(jiSungButton.snp.bottom).offset(15)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(220)
-            make.height.equalTo(50)
-        }
-        nickButton.snp.makeConstraints { make in
-            make.top.equalTo(minJaeButton.snp.bottom).offset(15)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(220)
-            make.height.equalTo(50)
-        }
-        seokHwanButton.snp.makeConstraints { make in
-            make.top.equalTo(nickButton.snp.bottom).offset(15)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(220)
-            make.height.equalTo(50)
-        }
-        seoYoungButton.snp.makeConstraints { make in
-            make.top.equalTo(seokHwanButton.snp.bottom).offset(15)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(220)
-            make.height.equalTo(50)
-        }
+    private func autoScroll() {
+        guard carouselState == .autoScrolling else { return }
+        let offsetX = collectionView.contentOffset.x + Constant.autoScrollOffsetX
+        collectionView.setContentOffset(CGPoint(x: offsetX, y: collectionView.contentOffset.y), animated: false)
     }
-
-    private func setupView() {
-        view.addSubview(backgroundImageView)
-        view.addSubview(blurView)
+    
+    private func addViews() {
         view.addSubview(collectionView)
-
-        backgroundImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-
-        blurView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-
+        view.addSubview(introView)
+    }
+    
+    private func configureLayout() {
+        let height = Int(view.frame.height * Constant.cellHeightRatio)
         collectionView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.width.equalToSuperview()
-            make.height.equalTo(view.snp.height).multipliedBy(0.45)
+            make.top.equalTo(view.layoutMarginsGuide)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(height)
+        }
+        introView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(collectionView.snp.bottom)
         }
     }
-
-    private func bindViewModel() {
-
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let initialOffset = CGPoint(x: cellWidth + Constant.initCollectionViewOffsetX, y: collectionView.contentOffset.y)
+        collectionView.setContentOffset(initialOffset, animated: false)
     }
-
-    private func updateUIView(with card: Card?) {
-
+    
+    deinit {
+        stopAutoScrollTimer()
     }
 }
 
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return cards.count
+        return viewModel.cards.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselCardCell.identifier, for: indexPath) as? CarouselCardCell else { return UICollectionViewCell() }
+        cell.configure(card: viewModel.cards[indexPath.row])
+        return cell
     }
-
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let cellWidthIncludeSpace = cellWidth + 20
+        let infiniteCarouselCount = viewModel.infiniteCarouselCount
+        if scrollView.contentOffset.x < 0 {
+            scrollView.contentOffset = CGPoint(x: cellWidthIncludeSpace * infiniteCarouselCount, y: scrollView.contentOffset.y)
+        }
+        if scrollView.contentOffset.x > cellWidthIncludeSpace * infiniteCarouselCount {
+            scrollView.contentOffset = CGPoint(x: 0, y: scrollView.contentOffset.y)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: cellWidth, height: collectionView.frame.height - 10)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        carouselState = .scrolling
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        carouselState = .autoScrolling
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let viewController = viewModel.cards[indexPath.row].memberViewController.initViewController()
+        self.present(viewController, animated: true)
+    }
+}
 
+extension MainViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        // cache
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        // delete cache
+    }
+}
+
+class MainCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let collectionView = collectionView else { return nil }
+        guard let attributes = super.layoutAttributesForElements(in: rect) else { return nil }
+        
+        let centerX = collectionView.contentOffset.x + collectionView.bounds.width * 0.5
+        
+        attributes.forEach { attribute in
+            let distance = attribute.center.x - centerX
+            let angle = distance / (UIScreen.main.bounds.height * 4)
+            let scale = max((1 - abs(distance / collectionView.bounds.width * 0.5)), 0.8)
+            attribute.transform = CGAffineTransform(translationX: 0, y: 0)
+                .rotated(by: angle)
+                .scaledBy(x: scale, y: scale)
+            attribute.zIndex = Int(1000 - abs(centerX))
+        }
+        return attributes
+    }
+    
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+            return true
     }
 }
