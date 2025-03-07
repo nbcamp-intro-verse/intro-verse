@@ -19,7 +19,7 @@ final class CarouselCardCell: UICollectionViewCell {
         stackView.distribution = .fill
         stackView.spacing = 8
         stackView.layer.cornerRadius = 15
-        stackView.backgroundColor = .white
+        stackView.backgroundColor = .lightGray.withAlphaComponent(0.4)
         return stackView
     }()
     
@@ -32,6 +32,7 @@ final class CarouselCardCell: UICollectionViewCell {
     private let positionTextLabel: UILabel = {
         let label = UILabel()
         label.text = "리더"
+        label.textColor = .white
         return label
     }()
     
@@ -47,7 +48,7 @@ final class CarouselCardCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 30)
         label.text = "이민재"
-        label.textColor = .black
+        label.textColor = .white
         label.textAlignment = .center
         return label
     }()
@@ -56,7 +57,7 @@ final class CarouselCardCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
         label.text = "1996.10.16"
-        label.textColor = .black
+        label.textColor = .white
         label.textAlignment = .center
         return label
     }()
@@ -104,7 +105,7 @@ final class CarouselCardCell: UICollectionViewCell {
         memberStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(20)
-            make.height.equalTo(contentView.frame.height / 3)
+            make.height.equalTo(contentView.frame.height / 4)
         }
     }
 

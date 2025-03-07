@@ -25,10 +25,10 @@ final class IntroView: UIView {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.text = """
-        안녕하세요. 우리팀 설명 텍스트입니다.
-        안녕하세요. 우리팀 설명 텍스트입니다.
-        안녕하세요. 우리팀 설명 텍스트입니다.
-        안녕하세요. 우리팀 설명 텍스트입니다.
+        안녕하세요, iOS 마스터 6기 4조입니다.
+        내일배움캠프에서 선보이는 첫 앱
+        IntroVerse에 오신 것을 환영합니다!
+        저희 팀의 이야기를 담은 이 앱을 통해 창의적인 개발 여정을 함께 하시길 바랍니다.
         """
         label.font = .preferredFont(forTextStyle: .body)
 
