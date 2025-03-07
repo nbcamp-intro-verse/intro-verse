@@ -6,7 +6,7 @@ final class CarouselCardCell: UICollectionViewCell {
     
     // MARK: - Properties
     private var backgroundImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "jisung_profile"))
+        let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 15
@@ -90,7 +90,6 @@ final class CarouselCardCell: UICollectionViewCell {
         memberStackView.addArrangedSubview(UILabel())
         memberStackView.addArrangedSubview(memberTextLabel)
         memberStackView.addArrangedSubview(memberBirthLabel)
-        
     }
     
     private func configureLayout() {
