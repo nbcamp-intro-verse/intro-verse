@@ -7,7 +7,6 @@ final class IntroView: UIView {
         label.text = "iOS 마스터 6기 4조"
         label.font = .preferredFont(forTextStyle: .footnote)
         label.textAlignment = .center
-
         return label
     }()
 
@@ -16,7 +15,6 @@ final class IntroView: UIView {
         label.text = "IntroVerse"
         label.font = .preferredFont(forTextStyle: .largeTitle)
         label.textAlignment = .center
-
         return label
     }()
 
@@ -45,8 +43,6 @@ final class IntroView: UIView {
         button.tintColor = .white
         button.layer.cornerRadius = 8
         button.contentHorizontalAlignment = .center
-
-
         return button
 
     }()
@@ -62,7 +58,6 @@ final class IntroView: UIView {
         button.contentHorizontalAlignment = .center
         button.backgroundColor = .black
         button.layer.cornerRadius = 8
-
         return button
     }()
 
@@ -70,8 +65,7 @@ final class IntroView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
-
+        self.backgroundColor = .clear
         self.addSubview(topLabel)
         self.addSubview(titleLabel)
         self.addSubview(descriptionLabel)
@@ -80,13 +74,12 @@ final class IntroView: UIView {
         
         githubButton.addTarget(self, action: #selector(githubButtonTapped), for: .touchUpInside)
         notionButton.addTarget(self, action: #selector(notionButtonTapped), for: .touchUpInside)
-
         setupConstraints()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 
     private func setupConstraints() {
         topLabel.snp.makeConstraints { make in
